@@ -2,19 +2,20 @@ import type { Config } from "tailwindcss";
 
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        paper: "#F2EAD8", // 米紙/磨石子底色
-        ink: "#2A241E", // 老招牌墨色
-        "tile-red": "#A6453A", // 老鐵盒磚紅
-        "tile-green": "#4B6B55", // 花磚苔綠
-        "tile-blue": "#3B5875", // 花磚靛藍
-        "tile-gold": "#C08A34", // 鐵盒金邊
-        "tile-cream": "#E8DDC4", // 磚縫米白
+        paper: "rgb(var(--color-paper) / <alpha-value>)",
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        "tile-red": "rgb(var(--color-tile-red) / <alpha-value>)",
+        "tile-green": "rgb(var(--color-tile-green) / <alpha-value>)",
+        "tile-blue": "rgb(var(--color-tile-blue) / <alpha-value>)",
+        "tile-gold": "rgb(var(--color-tile-gold) / <alpha-value>)",
+        "tile-cream": "rgb(var(--color-tile-cream) / <alpha-value>)",
         neon: {
-          pink: "#FF3D9A",
-          cyan: "#23E8C9",
+          pink: "rgb(var(--color-neon-pink) / <alpha-value>)",
+          cyan: "rgb(var(--color-neon-cyan) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -24,13 +25,15 @@ export default {
         mono: ['"IBM Plex Mono"', "monospace"],
       },
       boxShadow: {
-        neon: "0 0 6px rgba(255,61,154,0.7), 0 0 18px rgba(255,61,154,0.35)",
-        "neon-cyan": "0 0 6px rgba(35,232,201,0.7), 0 0 18px rgba(35,232,201,0.35)",
-        tile: "0 2px 0 rgba(42,36,30,0.08)",
+        neon:
+          "0 0 6px rgb(var(--color-neon-pink) / 0.7), 0 0 18px rgb(var(--color-neon-pink) / 0.35)",
+        "neon-cyan":
+          "0 0 6px rgb(var(--color-neon-cyan) / 0.7), 0 0 18px rgb(var(--color-neon-cyan) / 0.35)",
+        tile: "0 2px 0 rgb(var(--color-ink) / 0.08)",
       },
       backgroundImage: {
         "tile-grid":
-          "linear-gradient(rgba(42,36,30,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(42,36,30,0.06) 1px, transparent 1px)",
+          "linear-gradient(rgb(var(--color-ink) / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-ink) / 0.06) 1px, transparent 1px)",
       },
       backgroundSize: {
         "tile-grid": "48px 48px",

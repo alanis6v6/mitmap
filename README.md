@@ -56,3 +56,10 @@ npm run build    # 檢查型別 + build 產出 dist/
 - 卡片（`.tile-card`）hover 時邊框同樣亮起霓虹光暈，跟連結呼應。
 
 所有 token 定義在 `tailwind.config.ts`，要調色/調字直接改那邊。
+
+## 顯示主題
+
+網站提供「跟隨系統／亮色／暗色」三種模式。使用者選擇會儲存在瀏覽器，
+頁面載入前即套用，避免主題閃爍。亮暗色的語意化色彩變數定義在
+`src/index.css`，React 狀態與系統偏好同步邏輯位於
+`src/components/ThemeProvider.tsx`。

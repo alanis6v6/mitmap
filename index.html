@@ -8,6 +8,38 @@
       name="description"
       content="蒐集、查核、標註台灣製商品與品牌——分清楚原料產地與製造地，不是商城，是查核所。"
     />
+    <meta name="theme-color" content="#F2EAD8" />
+    <script>
+      (() => {
+        const storageKey = "mitmap-theme";
+        const root = document.documentElement;
+        let storedTheme;
+
+        try {
+          storedTheme = localStorage.getItem(storageKey);
+        } catch {
+          storedTheme = null;
+        }
+
+        const preference = ["system", "light", "dark"].includes(storedTheme)
+          ? storedTheme
+          : "system";
+        const resolved =
+          preference === "system"
+            ? matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light"
+            : preference;
+
+        root.classList.toggle("dark", resolved === "dark");
+        root.dataset.theme = resolved;
+        root.dataset.themePreference = preference;
+        root.style.colorScheme = resolved;
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute("content", resolved === "dark" ? "#151814" : "#F2EAD8");
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
