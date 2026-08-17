@@ -3,11 +3,14 @@ import CategoryChipCarousel from "@/components/home/CategoryChipCarousel";
 import ProductCarousel from "@/components/home/ProductCarousel";
 import ProfilePanel from "@/components/home/ProfilePanel";
 import { AccentLink } from "@/components/AccentLink";
+import { useProfilePanel } from "@/components/ProfilePanelProvider";
 import { products } from "@/data/mock";
 
 export default function Home() {
+  const { collapsed } = useProfilePanel();
+
   return (
-    <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+    <div className={`grid gap-6 items-start ${collapsed ? "" : "lg:grid-cols-[1fr_320px]"}`}>
       <div className="flex flex-col gap-8 min-w-0">
         <div className="flex flex-col sm:flex-row gap-3">
           <HeroRotator className="flex-1" />
@@ -39,7 +42,7 @@ export default function Home() {
         </section>
       </div>
 
-      <ProfilePanel className="lg:sticky lg:top-6" />
+      {!collapsed && <ProfilePanel className="lg:sticky lg:top-6" />}
     </div>
   );
 }

@@ -145,7 +145,7 @@ export default function HeroRotator({ className = "" }: { className?: string }) 
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl3 bg-accent p-6 sm:p-8 min-h-[280px] flex flex-col justify-between shadow-soft ${className}`}
+      className={`neon-frame relative overflow-hidden rounded-xl3 bg-accent p-6 sm:p-8 min-h-[280px] flex flex-col justify-between shadow-soft ${className}`}
     >
       <div key={slide.key}>{slide.render()}</div>
 

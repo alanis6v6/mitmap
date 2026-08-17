@@ -5,26 +5,27 @@
 @layer base {
   :root {
     color-scheme: light;
-    --color-shell: 244 201 168;
-    --color-surface: 253 246 237;
-    --color-panel: 255 249 241;
-    --color-sidebar: 224 131 106;
-    --color-ink: 58 46 40;
-    --color-accent: 224 136 99;
-    --color-chip-green: 169 198 160;
-    --color-chip-blue: 157 186 201;
-    --color-chip-gold: 224 185 120;
-    --color-chip-rose: 240 184 168;
+    --color-shell: 250 227 208;
+    --color-surface: 255 251 246;
+    --color-panel: 255 255 253;
+    --color-sidebar: 214 122 97;
+    --color-ink: 54 42 36;
+    --color-accent: 219 110 90;
+    --color-chip-green: 158 190 148;
+    --color-chip-blue: 148 178 196;
+    --color-chip-gold: 214 176 108;
+    --color-chip-rose: 232 176 160;
   }
 
   :root.dark {
     color-scheme: dark;
-    --color-shell: 30 22 20;
-    --color-surface: 40 32 29;
-    --color-panel: 46 37 33;
-    --color-sidebar: 156 82 61;
+    --color-shell: 24 18 17;
+    --color-surface: 34 27 25;
+    --color-panel: 40 32 29;
+    --color-sidebar: 145 76 57;
     --color-ink: 240 230 220;
     --color-accent: 224 141 108;
+    --color-neon: 88 240 214;
     --color-chip-green: 122 155 112;
     --color-chip-blue: 118 150 168;
     --color-chip-gold: 196 152 86;
@@ -137,6 +138,33 @@
   .category-chip:hover {
     transform: translateY(-2px);
   }
+
+  /* 大面積色塊容器（側邊欄、Hero）共用的邊框掛勾，暗色模式下亮霓虹邊 */
+  .neon-frame {
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+}
+
+/* ------------------------------------------------------------------
+   暗色模式：卡片／色塊改成霓虹邊框，取代亮色模式的柔和陰影。
+------------------------------------------------------------------ */
+:root.dark .panel-card,
+:root.dark .category-chip,
+:root.dark .neon-frame {
+  border-color: rgb(var(--color-neon) / 0.4);
+  box-shadow:
+    0 0 0 1px rgb(var(--color-neon) / 0.12),
+    0 0 14px rgb(var(--color-neon) / 0.16);
+}
+:root.dark .panel-card:hover,
+:root.dark .panel-card:focus-within,
+:root.dark .category-chip:hover {
+  border-color: rgb(var(--color-neon) / 0.8);
+  box-shadow:
+    0 0 0 1.5px rgb(var(--color-neon) / 0.55),
+    0 0 22px rgb(var(--color-neon) / 0.4);
 }
 
 @media (prefers-reduced-motion: no-preference) {

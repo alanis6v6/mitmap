@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 export default function MobileNav() {
   return (
     <nav
-      className="md:hidden fixed bottom-3 left-3 right-3 z-30 flex items-center justify-around rounded-xl3 bg-sidebar text-white shadow-soft px-2 py-2"
+      className="neon-frame md:hidden fixed bottom-3 left-3 right-3 z-30 flex items-center justify-around rounded-xl3 bg-sidebar text-white shadow-soft px-2 py-2"
       aria-label="主要導覽"
     >
       {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (

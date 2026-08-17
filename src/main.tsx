@@ -5,6 +5,7 @@ import App from "./App";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { AuthProvider } from "./components/AuthProvider";
 import { FavoritesProvider } from "./components/FavoritesProvider";
+import { ProfilePanelProvider } from "./components/ProfilePanelProvider";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -12,9 +13,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider>
       <AuthProvider>
         <FavoritesProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <ProfilePanelProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ProfilePanelProvider>
         </FavoritesProvider>
       </AuthProvider>
     </ThemeProvider>

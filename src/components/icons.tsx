@@ -119,6 +119,15 @@ export function LocateIcon(props: IconProps) {
   );
 }
 
+export function PanelRightIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+      <path d="M15.5 4.5v15" />
+    </svg>
+  );
+}
+
 export function PlusCircleIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
