@@ -8,14 +8,14 @@ const STATUS_LEGEND = [
 
 export default function About() {
   return (
-    <div className="mx-auto max-w-2xl px-5 py-10">
+    <div className="max-w-2xl mx-auto">
       <h1 className="heading-page mb-6">收錄標準</h1>
 
       <section className="mb-10">
         <h2 className="heading-sub mb-3">查核狀態怎麼讀</h2>
         <ul className="flex flex-col gap-3">
           {STATUS_LEGEND.map((s) => (
-            <li key={s.label} className="tile-card p-3">
+            <li key={s.label} className="panel-card p-3">
               <p className="font-bold text-sm">{s.label}</p>
               <p className="text-xs text-ink/60 mt-1">{s.desc}</p>
             </li>

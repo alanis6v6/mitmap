@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FilterBar from "@/components/FilterBar";
 import ProductCard from "@/components/ProductCard";
-import { NeonLink } from "@/components/NeonLink";
+import { AccentLink } from "@/components/AccentLink";
 import { categories, products } from "@/data/mock";
 import type { OriginClassification } from "@/data/types";
 
@@ -27,7 +27,7 @@ export default function Find() {
   });
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-10">
+    <div>
       <h1 className="heading-page mb-1">找商品</h1>
       <p className="text-lede mb-6">
         類別、原料/製造分類、地區三個篩選器互相獨立，可自由疊加。
@@ -38,7 +38,7 @@ export default function Find() {
           onClick={() => setSearchParams({})}
           className={`verify-badge ${
             activeCategory === "all"
-              ? "border-tile-red text-tile-red bg-tile-red/10"
+              ? "border-accent text-accent bg-accent/10"
               : "border-ink/20 text-ink/60"
           }`}
         >
@@ -50,7 +50,7 @@ export default function Find() {
             onClick={() => setSearchParams({ category: c.slug })}
             className={`verify-badge ${
               activeCategory === c.slug
-                ? "border-tile-red text-tile-red bg-tile-red/10"
+                ? "border-accent text-accent bg-accent/10"
                 : "border-ink/20 text-ink/60"
             }`}
           >
@@ -70,7 +70,7 @@ export default function Find() {
       {filtered.length === 0 ? (
         <p className="text-ink/50 text-sm py-12 text-center">
           這個條件組合目前沒有收錄商品——
-          <NeonLink to="/submit">要不要推薦一個？</NeonLink>
+          <AccentLink to="/submit">要不要推薦一個？</AccentLink>
         </p>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

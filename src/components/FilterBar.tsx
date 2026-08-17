@@ -31,7 +31,7 @@ export default function FilterBar({
       <select
         value={origin}
         onChange={(e) => onOriginChange(e.target.value as OriginClassification | "all")}
-        className="tile-card px-3 py-2 text-sm bg-paper font-body focus:outline-none"
+        className="panel-card px-3 py-2 text-sm bg-surface font-body focus:outline-none"
       >
         {ORIGIN_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -43,7 +43,7 @@ export default function FilterBar({
       <select
         value={county}
         onChange={(e) => onCountyChange(e.target.value)}
-        className="tile-card px-3 py-2 text-sm bg-paper font-body focus:outline-none"
+        className="panel-card px-3 py-2 text-sm bg-surface font-body focus:outline-none"
       >
         <option value="all">全部地區</option>
         {counties.map((c) => (

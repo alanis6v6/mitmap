@@ -91,7 +91,7 @@ export const products: Product[] = [
       sourceLinks: ["https://example.com/about"],
       verifiedAt: "2026-07-19",
     },
-    location: { county: "彰化縣", cluster: "社頭製襪" },
+    location: { county: "彰化縣", cluster: "社頭製襪", lat: 23.8987, lng: 120.5758 },
     description: "紗線採購到織襪、定型皆在社頭在地工廠完成。",
   },
   {
@@ -106,7 +106,7 @@ export const products: Product[] = [
       sourceLinks: ["https://example.com/mit-cert"],
       verifiedAt: "2026-06-02",
     },
-    location: { county: "雲林縣", cluster: "虎尾毛巾" },
+    location: { county: "雲林縣", cluster: "虎尾毛巾", lat: 23.7089, lng: 120.4325 },
     description: "進口原棉，於虎尾廠完成紡紗、織造、剪裁至包裝全製程。",
   },
   {
@@ -119,7 +119,7 @@ export const products: Product[] = [
       classification: "complete",
       verifiedAt: "2026-05-11",
     },
-    location: { county: "高雄市", cluster: "美濃紙傘" },
+    location: { county: "高雄市", cluster: "美濃紙傘", lat: 22.8998, lng: 120.7297 },
     description: "竹骨、棉紙、桐油皆取自在地供應鏈，手工繪製。",
   },
   {
@@ -134,7 +134,7 @@ export const products: Product[] = [
       otherCountries: ["中國（內鍋與電路板）"],
       sourceLinks: ["https://example.com/thread-post"],
     },
-    location: { county: "新北市" },
+    location: { county: "新北市", lat: 25.0117, lng: 121.4627 },
     description: "核心零件海外採購，最終組裝與品檢在新北廠完成，未達實質轉型門檻。",
   },
 ];

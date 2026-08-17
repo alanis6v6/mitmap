@@ -6,16 +6,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: "rgb(var(--color-paper) / <alpha-value>)",
+        shell: "rgb(var(--color-shell) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        panel: "rgb(var(--color-panel) / <alpha-value>)",
+        sidebar: "rgb(var(--color-sidebar) / <alpha-value>)",
         ink: "rgb(var(--color-ink) / <alpha-value>)",
-        "tile-red": "rgb(var(--color-tile-red) / <alpha-value>)",
-        "tile-green": "rgb(var(--color-tile-green) / <alpha-value>)",
-        "tile-blue": "rgb(var(--color-tile-blue) / <alpha-value>)",
-        "tile-gold": "rgb(var(--color-tile-gold) / <alpha-value>)",
-        "tile-cream": "rgb(var(--color-tile-cream) / <alpha-value>)",
-        neon: {
-          pink: "rgb(var(--color-neon-pink) / <alpha-value>)",
-          cyan: "rgb(var(--color-neon-cyan) / <alpha-value>)",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
+        chip: {
+          green: "rgb(var(--color-chip-green) / <alpha-value>)",
+          blue: "rgb(var(--color-chip-blue) / <alpha-value>)",
+          gold: "rgb(var(--color-chip-gold) / <alpha-value>)",
+          rose: "rgb(var(--color-chip-rose) / <alpha-value>)",
         },
       },
       fontFamily: {
@@ -24,19 +25,14 @@ export default {
         body: ['"Noto Sans TC"', "sans-serif"],
         mono: ['"IBM Plex Mono"', "monospace"],
       },
+      borderRadius: {
+        xl2: "1.25rem",
+        xl3: "1.75rem",
+      },
       boxShadow: {
-        neon:
-          "0 0 6px rgb(var(--color-neon-pink) / 0.7), 0 0 18px rgb(var(--color-neon-pink) / 0.35)",
-        "neon-cyan":
-          "0 0 6px rgb(var(--color-neon-cyan) / 0.7), 0 0 18px rgb(var(--color-neon-cyan) / 0.35)",
-        tile: "0 2px 0 rgb(var(--color-ink) / 0.08)",
-      },
-      backgroundImage: {
-        "tile-grid":
-          "linear-gradient(rgb(var(--color-ink) / 0.06) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-ink) / 0.06) 1px, transparent 1px)",
-      },
-      backgroundSize: {
-        "tile-grid": "48px 48px",
+        soft: "0 8px 24px rgb(var(--color-ink) / 0.08)",
+        card: "0 2px 10px rgb(var(--color-ink) / 0.06)",
+        accent: "0 6px 18px rgb(var(--color-accent) / 0.35)",
       },
     },
   },
