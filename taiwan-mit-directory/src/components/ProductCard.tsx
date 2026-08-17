@@ -11,15 +11,15 @@ export default function ProductCard({ product }: { product: Product }) {
     <article className="tile-card p-4 flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs text-ink/50 font-mono">{category?.name}</p>
-          <h3 className="font-display font-bold text-lg leading-snug">
+          <p className="text-meta">{category?.name}</p>
+          <h3 className="heading-sub leading-snug">
             <NeonLink to={`/products/${product.slug}`}>{product.name}</NeonLink>
           </h3>
         </div>
         <OriginBadge classification={product.origin.classification} />
       </div>
 
-      <p className="text-sm text-ink/70 leading-relaxed">{product.description}</p>
+      <p className="text-body">{product.description}</p>
 
       <div className="flex items-center justify-between text-xs text-ink/50 border-t border-ink/10 pt-3 mt-1">
         <span>

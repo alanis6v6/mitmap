@@ -20,6 +20,38 @@
 }
 
 @layer components {
+  /* ------------------------------------------------------------------
+     文字階層 token：大標/小標/內文/說明統一在這裡調字級字重，
+     頁面元件套用這些語意化 class，不要各自寫字級組合。
+  ------------------------------------------------------------------ */
+  .heading-hero {
+    @apply font-display font-black text-3xl sm:text-4xl leading-tight;
+  }
+  .heading-page {
+    @apply font-display font-black text-3xl;
+  }
+  .heading-section {
+    @apply font-display font-bold text-xl;
+  }
+  .heading-sub {
+    @apply font-display font-bold text-lg;
+  }
+  .text-prose {
+    @apply text-ink/80 leading-relaxed;
+  }
+  .text-lede {
+    @apply text-sm text-ink/60 leading-relaxed;
+  }
+  .text-body {
+    @apply text-sm text-ink/70 leading-relaxed;
+  }
+  .text-meta {
+    @apply font-mono text-xs text-ink/50;
+  }
+  .text-hint {
+    @apply font-mono text-xs text-ink/40;
+  }
+
   /* 花磚縫線底：低飽和格線紋理，模擬老磁磚地坪 */
   .tile-floor {
     background-image:

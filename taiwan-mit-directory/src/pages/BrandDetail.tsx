@@ -20,7 +20,7 @@ export default function BrandDetail() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-10">
-      <p className="text-xs font-mono text-ink/50 mb-2">
+      <p className="text-meta mb-2">
         <Link to="/find" className="hover:text-tile-red">
           找商品
         </Link>{" "}
@@ -28,7 +28,7 @@ export default function BrandDetail() {
       </p>
 
       <div className="flex items-start justify-between gap-3 mb-2">
-        <h1 className="font-display font-black text-3xl">{brand.name}</h1>
+        <h1 className="heading-page">{brand.name}</h1>
         <span
           className={`verify-badge ${
             brand.merchantConfirmed
@@ -40,14 +40,14 @@ export default function BrandDetail() {
         </span>
       </div>
 
-      <p className="text-ink/70 leading-relaxed mb-2 max-w-2xl">{brand.description}</p>
+      <p className="text-prose mb-2 max-w-2xl">{brand.description}</p>
       {brand.website && (
         <NeonAnchor href={brand.website} className="text-sm">
           品牌官網 ↗
         </NeonAnchor>
       )}
 
-      <h2 className="font-display font-bold text-xl mt-10 mb-4">
+      <h2 className="heading-section mt-10 mb-4">
         收錄商品 ({brandProducts.length})
       </h2>
       <div className="grid sm:grid-cols-2 gap-4">

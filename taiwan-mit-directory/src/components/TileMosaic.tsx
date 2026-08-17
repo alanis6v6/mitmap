@@ -13,14 +13,14 @@ export default function TileMosaic() {
           TAIWAN MADE · 查核所
         </span>
         <div>
-          <h1 className="font-display font-black text-3xl sm:text-4xl leading-tight text-ink">
+          <h1 className="heading-hero text-ink">
             分清楚
             <br />
             原料在哪、
             <br />
             做在哪。
           </h1>
-          <p className="mt-4 text-ink/60 text-sm leading-relaxed max-w-xs">
+          <p className="mt-4 text-lede max-w-xs">
             台灣製不代表原料一定產自台灣——我們把「原料/製造分類」跟「製造地」
             分開標註，讓每一筆收錄都查得到來源。
           </p>

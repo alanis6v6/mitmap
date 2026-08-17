@@ -28,8 +28,8 @@ export default function Find() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10">
-      <h1 className="font-display font-black text-3xl mb-1">找商品</h1>
-      <p className="text-ink/60 text-sm mb-6">
+      <h1 className="heading-page mb-1">找商品</h1>
+      <p className="text-lede mb-6">
         類別、原料/製造分類、地區三個篩選器互相獨立，可自由疊加。
       </p>
 

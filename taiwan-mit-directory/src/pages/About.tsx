@@ -9,10 +9,10 @@ const STATUS_LEGEND = [
 export default function About() {
   return (
     <div className="mx-auto max-w-2xl px-5 py-10">
-      <h1 className="font-display font-black text-3xl mb-6">收錄標準</h1>
+      <h1 className="heading-page mb-6">收錄標準</h1>
 
       <section className="mb-10">
-        <h2 className="font-display font-bold text-lg mb-3">查核狀態怎麼讀</h2>
+        <h2 className="heading-sub mb-3">查核狀態怎麼讀</h2>
         <ul className="flex flex-col gap-3">
           {STATUS_LEGEND.map((s) => (
             <li key={s.label} className="tile-card p-3">
@@ -24,8 +24,8 @@ export default function About() {
       </section>
 
       <section>
-        <h2 className="font-display font-bold text-lg mb-3">法規依據</h2>
-        <p className="text-sm text-ink/70 leading-relaxed">
+        <h2 className="heading-sub mb-3">法規依據</h2>
+        <p className="text-body">
           依《原產地證明書及加工證明書管理辦法》第3條、第5條，輸出貨品以台灣為原產地，
           須符合「完全取得或完全生產」，或「原材料涉及台灣與其他國家共同參與、且在台灣
           境內產生最終實質轉型」。實質轉型指原材料加工後的貨品與原材料歸屬之海關進口稅則

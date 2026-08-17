@@ -6,7 +6,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-6xl px-5 py-10 grid gap-8 sm:grid-cols-3 text-sm">
         <div>
           <p className="stamp-text text-tile-red text-xl mb-2">台製誌</p>
-          <p className="text-ink/60 leading-relaxed">
+          <p className="text-lede">
             蒐集、查核、標註台灣製商品與品牌。
             <br />
             不是商城，是查核所。
@@ -24,7 +24,7 @@ export default function SiteFooter() {
           <NeonLink to="/report">回報產地爭議</NeonLink>
         </div>
       </div>
-      <div className="border-t border-ink/10 py-4 text-center text-xs text-ink/40 font-mono">
+      <div className="text-hint border-t border-ink/10 py-4 text-center">
         資料為示範用假資料 · SCAFFOLD BUILD
       </div>
     </footer>
