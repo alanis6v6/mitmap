@@ -5,31 +5,31 @@
 @layer base {
   :root {
     color-scheme: light;
-    --color-shell: 250 246 240;
-    --color-surface: 255 255 255;
-    --color-panel: 253 251 248;
-    --color-sidebar: 210 118 93;
-    --color-ink: 38 34 36;
-    --color-accent: 214 110 88;
-    --color-chip-green: 178 209 92;
-    --color-chip-blue: 186 175 240;
-    --color-chip-gold: 240 201 61;
-    --color-chip-rose: 224 92 79;
+    --color-shell: 230 222 236;
+    --color-surface: 252 250 247;
+    --color-panel: 244 240 247;
+    --color-sidebar: 79 68 98;
+    --color-ink: 47 42 55;
+    --color-accent: 202 79 112;
+    --color-chip-green: 113 141 137;
+    --color-chip-blue: 123 126 174;
+    --color-chip-gold: 183 137 117;
+    --color-chip-rose: 187 91 123;
   }
 
   :root.dark {
     color-scheme: dark;
-    --color-shell: 24 18 17;
-    --color-surface: 34 27 25;
-    --color-panel: 40 32 29;
-    --color-sidebar: 145 76 57;
-    --color-ink: 240 230 220;
-    --color-accent: 224 141 108;
-    --color-neon: 88 240 214;
-    --color-chip-green: 140 165 85;
-    --color-chip-blue: 150 138 190;
-    --color-chip-gold: 196 156 70;
-    --color-chip-rose: 190 96 84;
+    --color-shell: 24 21 30;
+    --color-surface: 34 30 41;
+    --color-panel: 43 38 51;
+    --color-sidebar: 63 52 78;
+    --color-ink: 242 237 244;
+    --color-accent: 235 112 146;
+    --color-neon: 218 144 197;
+    --color-chip-green: 91 121 117;
+    --color-chip-blue: 102 105 154;
+    --color-chip-gold: 151 108 92;
+    --color-chip-rose: 158 70 101;
   }
 
   html {
@@ -37,6 +37,11 @@
   }
   body {
     @apply bg-shell text-ink font-body antialiased;
+    min-width: 320px;
+    background-image:
+      radial-gradient(circle at 8% 8%, rgb(var(--color-accent) / 0.13), transparent 28rem),
+      radial-gradient(circle at 92% 88%, rgb(var(--color-chip-blue) / 0.12), transparent 30rem);
+    background-attachment: fixed;
   }
   ::selection {
     background: rgb(var(--color-accent));
@@ -119,11 +124,11 @@
 
   /* 卡片：柔和陰影、大圓角的儀表板卡片風格 */
   .panel-card {
-    @apply relative rounded-xl2 border border-ink/5 bg-surface shadow-card transition-shadow duration-300;
+    @apply relative rounded-xl2 border border-ink/10 bg-surface shadow-card transition-all duration-300;
   }
   .panel-card:hover,
   .panel-card:focus-within {
-    @apply shadow-soft;
+    @apply border-accent/20 shadow-soft;
   }
 
   /* 查核狀態徽章：柔色底、圓角藥丸 */
@@ -133,7 +138,17 @@
 
   /* 產業/類別小方塊 */
   .category-chip {
-    @apply relative flex flex-col justify-end rounded-xl2 p-3 text-white shadow-card transition-transform duration-200;
+    @apply relative flex flex-col justify-end overflow-hidden rounded-xl2 p-3 text-white shadow-card transition-transform duration-200;
+  }
+  .category-chip::before {
+    content: "";
+    position: absolute;
+    width: 2.75rem;
+    height: 2.75rem;
+    right: -0.65rem;
+    top: -0.8rem;
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 999px;
   }
   .category-chip:hover {
     transform: translateY(-2px);
@@ -144,6 +159,10 @@
     transition:
       border-color 200ms ease,
       box-shadow 200ms ease;
+  }
+
+  .app-shell {
+    border: 1px solid rgb(var(--color-ink) / 0.06);
   }
 }
 

@@ -33,6 +33,7 @@ export default {
         soft: "0 8px 24px rgb(var(--color-ink) / 0.08)",
         card: "0 2px 10px rgb(var(--color-ink) / 0.06)",
         accent: "0 6px 18px rgb(var(--color-accent) / 0.35)",
+        shell: "0 24px 70px rgb(var(--color-ink) / 0.13)",
       },
     },
   },

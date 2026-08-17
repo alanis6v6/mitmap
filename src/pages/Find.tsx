@@ -3,12 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import FilterBar from "@/components/FilterBar";
 import ProductCard from "@/components/ProductCard";
 import { AccentLink } from "@/components/AccentLink";
-import { categories, products } from "@/data/mock";
+import { categories, getBrand, products } from "@/data/mock";
 import type { OriginClassification } from "@/data/types";
 
 export default function Find() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("category") ?? "all";
+  const query = (searchParams.get("q") ?? "").trim().toLocaleLowerCase("zh-Hant-TW");
 
   const [origin, setOrigin] = useState<OriginClassification | "all">("all");
   const [county, setCounty] = useState<string>("all");
@@ -20,22 +21,42 @@ export default function Find() {
 
   const filtered = products.filter((p) => {
     const cat = categories.find((c) => c.id === p.categoryId);
+    const brand = getBrand(p.brandId);
     if (activeCategory !== "all" && cat?.slug !== activeCategory) return false;
     if (origin !== "all" && p.origin.classification !== origin) return false;
     if (county !== "all" && p.location.county !== county) return false;
+    if (
+      query &&
+      ![p.name, p.description, brand?.name, cat?.name, p.location.county, p.location.cluster]
+        .filter(Boolean)
+        .join(" ")
+        .toLocaleLowerCase("zh-Hant-TW")
+        .includes(query)
+    ) {
+      return false;
+    }
     return true;
   });
+
+  const selectCategory = (category: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (category === "all") next.delete("category");
+    else next.set("category", category);
+    setSearchParams(next);
+  };
 
   return (
     <div>
       <h1 className="heading-page mb-1">找商品</h1>
       <p className="text-lede mb-6">
-        類別、原料/製造分類、地區三個篩選器互相獨立，可自由疊加。
+        {query
+          ? `正在搜尋「${searchParams.get("q")}」；也可繼續疊加類別、製造分類與地區篩選。`
+          : "類別、原料/製造分類、地區三個篩選器互相獨立，可自由疊加。"}
       </p>
 
       <div className="flex flex-wrap gap-2 mb-6">
         <button
-          onClick={() => setSearchParams({})}
+          onClick={() => selectCategory("all")}
           className={`verify-badge ${
             activeCategory === "all"
               ? "border-accent text-accent bg-accent/10"
@@ -47,7 +68,7 @@ export default function Find() {
         {categories.map((c) => (
           <button
             key={c.id}
-            onClick={() => setSearchParams({ category: c.slug })}
+            onClick={() => selectCategory(c.slug)}
             className={`verify-badge ${
               activeCategory === c.slug
                 ? "border-accent text-accent bg-accent/10"

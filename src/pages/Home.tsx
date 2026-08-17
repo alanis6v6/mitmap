@@ -1,3 +1,5 @@
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HeroRotator from "@/components/home/HeroRotator";
 import CategoryChipCarousel from "@/components/home/CategoryChipCarousel";
 import ProductCarousel from "@/components/home/ProductCarousel";
@@ -5,16 +7,57 @@ import ProfilePanel from "@/components/home/ProfilePanel";
 import { AccentLink } from "@/components/AccentLink";
 import { useProfilePanel } from "@/components/ProfilePanelProvider";
 import { products } from "@/data/mock";
+import { SearchIcon } from "@/components/icons";
 
 export default function Home() {
   const { collapsed } = useProfilePanel();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const keyword = query.trim();
+    navigate(keyword ? `/find?q=${encodeURIComponent(keyword)}` : "/find");
+  };
 
   return (
-    <div className={`grid gap-6 ${collapsed ? "" : "lg:grid-cols-[1fr_320px]"}`}>
+    <div
+      className={`grid gap-7 ${
+        collapsed
+          ? ""
+          : "lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px]"
+      }`}
+    >
       <div className="flex flex-col gap-8 min-w-0">
+        <header className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <p className="text-meta mb-2 tracking-[0.18em] text-accent">CURATED IN TAIWAN</p>
+            <h1 className="heading-page max-w-xl">在台灣，找到認真做的好東西。</h1>
+          </div>
+          <form
+            onSubmit={submitSearch}
+            className="flex w-full max-w-xl items-center gap-3 rounded-full border border-ink/10 bg-panel px-4 py-3 transition focus-within:border-accent/50 focus-within:bg-surface focus-within:shadow-card"
+          >
+            <SearchIcon className="h-5 w-5 shrink-0 text-ink/40" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="搜尋商品、品牌或地方"
+              aria-label="搜尋商品、品牌或地方"
+              className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink/35"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-ink px-4 py-2 text-xs font-bold text-surface transition hover:bg-accent"
+            >
+              搜尋
+            </button>
+          </form>
+        </header>
+
         <div className="flex flex-col sm:flex-row gap-3">
           <HeroRotator className="flex-1" />
-          <CategoryChipCarousel className="sm:w-20 lg:w-24 shrink-0" />
+          <CategoryChipCarousel className="sm:w-24 xl:w-28 shrink-0" />
         </div>
 
         <section>
@@ -42,7 +85,7 @@ export default function Home() {
         </section>
       </div>
 
-      {!collapsed && <ProfilePanel className="h-full lg:sticky lg:top-6" />}
+      {!collapsed && <ProfilePanel className="h-fit lg:sticky lg:top-8" />}
     </div>
   );
 }

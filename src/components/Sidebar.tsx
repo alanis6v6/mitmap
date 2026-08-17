@@ -25,9 +25,13 @@ export default function Sidebar() {
   const { collapsed, toggle } = useProfilePanel();
 
   return (
-    <aside className="neon-frame hidden md:flex flex-col items-center justify-between w-20 shrink-0 py-6 sticky top-6 h-[calc(100vh-3rem)] rounded-xl3 bg-sidebar text-white shadow-soft">
+    <aside className="neon-frame hidden md:flex flex-col items-center justify-between w-20 lg:w-24 shrink-0 py-7 sticky top-0 h-[calc(100vh-2rem)] lg:h-[calc(100vh-2.5rem)] bg-sidebar text-white">
       {/* 網站名稱永遠固定在最上面，不受下方收合功能影響 */}
-      <NavLink to="/" aria-label="佇遮 tī-tsia 首頁" className="stamp-text text-2xl shrink-0">
+      <NavLink
+        to="/"
+        aria-label="佇遮 tī-tsia 首頁"
+        className="stamp-text flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-xl text-sidebar shadow-card"
+      >
         佇
       </NavLink>
 
@@ -40,8 +44,8 @@ export default function Sidebar() {
             aria-label={item.label}
             title={item.label}
             className={({ isActive }) =>
-              `flex items-center justify-center w-11 h-11 rounded-xl2 transition-colors duration-150 ${
-                isActive ? "bg-white/20" : "hover:bg-white/10 text-white/75"
+              `group relative flex items-center justify-center w-11 h-11 rounded-xl2 transition-all duration-150 ${
+                isActive ? "bg-white text-sidebar shadow-card" : "hover:bg-white/10 text-white/70 hover:text-white"
               }`
             }
           >

@@ -9,7 +9,7 @@ function SeasonalSlide() {
   const featured = products[0];
   const brand = getBrand(featured.brandId);
   return (
-    <div className="flex flex-col gap-3">
+    <div className="relative z-10 flex flex-col gap-3">
       <span className="verify-badge border-white/40 text-white w-fit">當季推薦</span>
       <h2 className="heading-hero text-white">{featured.name}</h2>
       <p className="text-sm text-white/70 max-w-xs">
@@ -28,7 +28,7 @@ function SeasonalSlide() {
 function ManufacturerSlide() {
   const featured = brands[0];
   return (
-    <div className="flex flex-col gap-3">
+    <div className="relative z-10 flex flex-col gap-3">
       <span className="verify-badge border-white/40 text-white w-fit">台製廠商</span>
       <h2 className="heading-hero text-white">{featured.name}</h2>
       <p className="text-sm text-white/70 max-w-xs">{featured.description}</p>
@@ -44,7 +44,7 @@ function ManufacturerSlide() {
 
 function ShopeeSlide() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="relative z-10 flex flex-col gap-3">
       <span className="verify-badge border-white/40 text-white w-fit">蝦皮特搜</span>
       <h2 className="heading-hero text-white">
         上架平台的
@@ -60,7 +60,7 @@ function ShopeeSlide() {
 
 function MapSlide() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="relative z-10 flex flex-col gap-3">
       <span className="verify-badge border-white/40 text-white w-fit">地圖</span>
       <h2 className="heading-hero text-white">
         避雷還是推薦？
@@ -95,11 +95,19 @@ export default function HeroRotator({ className = "" }: { className?: string }) 
 
   return (
     <div
-      className={`neon-frame relative overflow-hidden rounded-xl3 bg-accent p-6 sm:p-8 min-h-[280px] flex flex-col justify-between shadow-soft ${className}`}
+      className={`neon-frame relative overflow-hidden rounded-xl3 bg-sidebar p-6 sm:p-8 min-h-[320px] flex flex-col justify-between shadow-soft ${className}`}
     >
+      <img
+        src="/images/mit-hero.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(47,42,55,0.96)_0%,rgba(62,53,76,0.88)_34%,rgba(62,53,76,0.32)_66%,rgba(62,53,76,0.05)_100%)]" />
+      <div className="absolute -left-12 -top-16 h-48 w-48 rounded-full border border-white/10" />
       <div key={slide.key}>{slide.render()}</div>
 
-      <div className="flex items-center gap-3 mt-4">
+      <div className="relative z-10 flex items-center gap-3 mt-4">
         <button
           type="button"
           aria-label="上一則"

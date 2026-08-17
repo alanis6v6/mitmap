@@ -33,7 +33,7 @@ export default function CategoryChipCarousel({ className = "" }: { className?: s
         <AccentLink
           key={category.id}
           to={`/find?category=${category.slug}`}
-          className={`category-chip flex-1 sm:flex-none sm:h-[63px] min-h-[63px] ${CHIP_COLORS[i % CHIP_COLORS.length]}`}
+          className={`category-chip flex-1 sm:flex-none sm:h-[74px] min-h-[68px] ${CHIP_COLORS[i % CHIP_COLORS.length]}`}
         >
           <span className="font-display font-bold text-sm leading-tight">
             {category.name}
