@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #f2ead8;
+  }
+  body {
+    @apply bg-paper text-ink font-body antialiased;
+  }
+  ::selection {
+    background: #ff3d9a;
+    color: #f2ead8;
+  }
+  :focus-visible {
+    outline: 2px solid #ff3d9a;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* 花磚縫線底：低飽和格線紋理，模擬老磁磚地坪 */
+  .tile-floor {
+    background-image:
+      linear-gradient(rgba(42, 36, 30, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42, 36, 30, 0.07) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* 招牌字：碳化石材質感的展示字 */
+  .stamp-text {
+    font-family: "Alfa Slab One", cursive;
+    letter-spacing: 0.02em;
+  }
+
+  /* ------------------------------------------------------------------
+     霓虹底線連結：白天是老磁磚的墨色字，
+     hover / focus 時像夜市招牌一樣亮起霓虹底線與微光。
+     這是整站唯一的「亮」元素，其餘維持低飽和。
+  ------------------------------------------------------------------ */
+  .neon-link {
+    position: relative;
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .neon-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -2px;
+    height: 2px;
+    background: #ff3d9a;
+    box-shadow: 0 0 6px rgba(255, 61, 154, 0.8), 0 0 16px rgba(255, 61, 154, 0.5);
+    transition: right 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .neon-link:hover,
+  .neon-link:focus-visible {
+    color: #a6453a;
+  }
+  .neon-link:hover::after,
+  .neon-link:focus-visible::after {
+    right: 0;
+  }
+
+  /* 卡片：磁磚感邊框，hover 時邊框亮起霓虹光暈 */
+  .tile-card {
+    @apply relative rounded-sm border border-ink/10 bg-tile-cream/40 transition-shadow duration-300;
+  }
+  .tile-card:hover,
+  .tile-card:focus-within {
+    box-shadow:
+      0 0 0 1.5px #ff3d9a,
+      0 0 14px rgba(255, 61, 154, 0.35);
+  }
+
+  /* 查核狀態徽章使用等寬字，像公文編號 */
+  .verify-badge {
+    @apply font-mono text-[11px] tracking-wide uppercase px-2 py-1 rounded-sm border;
+  }
+}
