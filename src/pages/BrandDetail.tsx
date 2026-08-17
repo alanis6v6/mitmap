@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { brands, products } from "@/data/mock";
 import ProductCard from "@/components/ProductCard";
-import { NeonAnchor, NeonLink } from "@/components/NeonLink";
+import { AccentAnchor, AccentLink } from "@/components/AccentLink";
 
 export default function BrandDetail() {
   const { slug } = useParams();
@@ -9,9 +9,9 @@ export default function BrandDetail() {
 
   if (!brand) {
     return (
-      <div className="mx-auto max-w-3xl px-5 py-20 text-center">
+      <div className="max-w-3xl mx-auto py-20 text-center">
         <p className="text-ink/50">找不到這個品牌。</p>
-        <NeonLink to="/find">回找商品 →</NeonLink>
+        <AccentLink to="/find">回找商品 →</AccentLink>
       </div>
     );
   }
@@ -19,9 +19,9 @@ export default function BrandDetail() {
   const brandProducts = products.filter((p) => p.brandId === brand.id);
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-10">
+    <div className="max-w-4xl mx-auto">
       <p className="text-meta mb-2">
-        <Link to="/find" className="hover:text-tile-red">
+        <Link to="/find" className="hover:text-accent">
           找商品
         </Link>{" "}
         / 品牌
@@ -32,7 +32,7 @@ export default function BrandDetail() {
         <span
           className={`verify-badge ${
             brand.merchantConfirmed
-              ? "border-tile-green text-tile-green bg-tile-green/10"
+              ? "border-chip-green text-chip-green bg-chip-green/10"
               : "border-ink/30 text-ink/50 bg-ink/5"
           }`}
         >
@@ -42,9 +42,9 @@ export default function BrandDetail() {
 
       <p className="text-prose mb-2 max-w-2xl">{brand.description}</p>
       {brand.website && (
-        <NeonAnchor href={brand.website} className="text-sm">
+        <AccentAnchor href={brand.website} className="text-sm">
           品牌官網 ↗
-        </NeonAnchor>
+        </AccentAnchor>
       )}
 
       <h2 className="heading-section mt-10 mb-4">

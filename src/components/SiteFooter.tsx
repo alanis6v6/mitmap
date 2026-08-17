@@ -1,32 +1,18 @@
-import { NeonLink } from "./NeonLink";
+import { AccentLink } from "./AccentLink";
 
 export default function SiteFooter() {
   return (
-    <footer className="tile-floor border-t border-ink/10 mt-24">
-      <div className="mx-auto max-w-6xl px-5 py-10 grid gap-8 sm:grid-cols-3 text-sm">
-        <div>
-          <p className="stamp-text text-tile-red text-xl mb-2">台製誌</p>
-          <p className="text-lede">
-            蒐集、查核、標註台灣製商品與品牌。
-            <br />
-            不是商城，是查核所。
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="font-display font-bold mb-1">探索</span>
-          <NeonLink to="/find">找商品</NeonLink>
-          <NeonLink to="/regions">找地方</NeonLink>
-          <NeonLink to="/about">收錄標準與查核狀態</NeonLink>
-        </div>
-        <div className="flex flex-col gap-2">
-          <span className="font-display font-bold mb-1">參與</span>
-          <NeonLink to="/submit">推薦台灣製品牌</NeonLink>
-          <NeonLink to="/report">回報產地爭議</NeonLink>
-        </div>
+    <footer className="mt-16 mb-24 md:mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>
+        <p className="stamp-text text-accent">佇遮 tī-tsia</p>
+        <p className="text-lede">台灣囡仔、台灣製造，就在這裡。</p>
       </div>
-      <div className="text-hint border-t border-ink/10 py-4 text-center">
-        資料為示範用假資料 · SCAFFOLD BUILD
+      <div className="flex items-center gap-5 text-sm">
+        <AccentLink to="/about">收錄標準</AccentLink>
+        <AccentLink to="/submit">推薦品牌</AccentLink>
+        <AccentLink to="/report">回報爭議</AccentLink>
       </div>
+      <p className="text-hint">資料為示範用假資料 · SCAFFOLD BUILD</p>
     </footer>
   );
 }

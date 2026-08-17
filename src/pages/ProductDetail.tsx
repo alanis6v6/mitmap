@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { products, getBrand, getCategory } from "@/data/mock";
 import OriginBadge from "@/components/OriginBadge";
-import { NeonLink, NeonAnchor } from "@/components/NeonLink";
+import { AccentLink, AccentAnchor } from "@/components/AccentLink";
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -9,9 +9,9 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="mx-auto max-w-3xl px-5 py-20 text-center">
+      <div className="max-w-3xl mx-auto py-20 text-center">
         <p className="text-ink/50">找不到這個商品。</p>
-        <NeonLink to="/find">回找商品 →</NeonLink>
+        <AccentLink to="/find">回找商品 →</AccentLink>
       </div>
     );
   }
@@ -21,9 +21,9 @@ export default function ProductDetail() {
   const { origin, location } = product;
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-10">
+    <div className="max-w-3xl mx-auto">
       <p className="text-meta mb-2">
-        <Link to="/find" className="hover:text-tile-red">
+        <Link to="/find" className="hover:text-accent">
           找商品
         </Link>{" "}
         / {category?.name}
@@ -36,14 +36,14 @@ export default function ProductDetail() {
 
       {brand && (
         <p className="text-lede mb-6">
-          品牌：<NeonLink to={`/brands/${brand.slug}`}>{brand.name}</NeonLink>
+          品牌：<AccentLink to={`/brands/${brand.slug}`}>{brand.name}</AccentLink>
         </p>
       )}
 
       <p className="text-prose mb-8">{product.description}</p>
 
       <div className="grid sm:grid-cols-2 gap-4">
-        <section className="tile-card p-4">
+        <section className="panel-card p-4">
           <h2 className="heading-section mb-3">原料/製造分類</h2>
           {origin.sourceCountries && (
             <p className="text-sm mb-1">
@@ -71,15 +71,15 @@ export default function ProductDetail() {
           {origin.sourceLinks && origin.sourceLinks.length > 0 && (
             <div className="mt-3 flex flex-col gap-1">
               {origin.sourceLinks.map((link) => (
-                <NeonAnchor key={link} href={link} className="text-xs">
+                <AccentAnchor key={link} href={link} className="text-xs">
                   查核來源 ↗
-                </NeonAnchor>
+                </AccentAnchor>
               ))}
             </div>
           )}
         </section>
 
-        <section className="tile-card p-4">
+        <section className="panel-card p-4">
           <h2 className="heading-section mb-3">製造地</h2>
           <p className="text-sm">
             <span className="text-ink/50">縣市：</span>

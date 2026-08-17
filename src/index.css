@@ -5,42 +5,45 @@
 @layer base {
   :root {
     color-scheme: light;
-    --color-paper: 242 234 216;
-    --color-ink: 42 36 30;
-    --color-tile-red: 166 69 58;
-    --color-tile-green: 75 107 85;
-    --color-tile-blue: 59 88 117;
-    --color-tile-gold: 192 138 52;
-    --color-tile-cream: 232 221 196;
-    --color-neon-pink: 255 61 154;
-    --color-neon-cyan: 35 232 201;
+    --color-shell: 250 246 240;
+    --color-surface: 255 255 255;
+    --color-panel: 253 251 248;
+    --color-sidebar: 210 118 93;
+    --color-ink: 38 34 36;
+    --color-accent: 214 110 88;
+    --color-chip-green: 178 209 92;
+    --color-chip-blue: 186 175 240;
+    --color-chip-gold: 240 201 61;
+    --color-chip-rose: 224 92 79;
   }
 
   :root.dark {
     color-scheme: dark;
-    --color-paper: 21 24 20;
-    --color-ink: 243 234 215;
-    --color-tile-red: 214 129 115;
-    --color-tile-green: 123 155 130;
-    --color-tile-blue: 118 152 184;
-    --color-tile-gold: 215 174 97;
-    --color-tile-cream: 43 48 42;
-    --color-neon-pink: 255 94 174;
-    --color-neon-cyan: 75 235 214;
+    --color-shell: 24 18 17;
+    --color-surface: 34 27 25;
+    --color-panel: 40 32 29;
+    --color-sidebar: 145 76 57;
+    --color-ink: 240 230 220;
+    --color-accent: 224 141 108;
+    --color-neon: 88 240 214;
+    --color-chip-green: 140 165 85;
+    --color-chip-blue: 150 138 190;
+    --color-chip-gold: 196 156 70;
+    --color-chip-rose: 190 96 84;
   }
 
   html {
-    background-color: rgb(var(--color-paper));
+    background-color: rgb(var(--color-shell));
   }
   body {
-    @apply bg-paper text-ink font-body antialiased;
+    @apply bg-shell text-ink font-body antialiased;
   }
   ::selection {
-    background: rgb(var(--color-neon-pink));
-    color: rgb(var(--color-paper));
+    background: rgb(var(--color-accent));
+    color: rgb(var(--color-surface));
   }
   :focus-visible {
-    outline: 2px solid rgb(var(--color-neon-pink));
+    outline: 2px solid rgb(var(--color-accent));
     outline-offset: 3px;
   }
 }
@@ -78,69 +81,90 @@
     @apply font-mono text-xs text-ink/40;
   }
 
-  /* 花磚縫線底：低飽和格線紋理，模擬老磁磚地坪 */
-  .tile-floor {
-    background-image:
-      linear-gradient(rgb(var(--color-ink) / 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--color-ink) / 0.07) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
-
-  /* 招牌字：碳化石材質感的展示字 */
+  /* 招牌字：碳化石材質感的展示字，僅用於品牌 logo */
   .stamp-text {
     font-family: "Alfa Slab One", cursive;
     letter-spacing: 0.02em;
   }
 
   /* ------------------------------------------------------------------
-     霓虹底線連結：白天是老磁磚的墨色字，
-     hover / focus 時像夜市招牌一樣亮起霓虹底線與微光。
-     這是整站唯一的「亮」元素，其餘維持低飽和。
+     強調連結：平時是墨色字，hover / focus 時變成珊瑚色並亮起底線。
   ------------------------------------------------------------------ */
-  .neon-link {
+  .accent-link {
     position: relative;
     display: inline-block;
     color: inherit;
     text-decoration: none;
-    transition: color 0.25s ease;
+    transition: color 0.2s ease;
   }
-  .neon-link::after {
+  .accent-link::after {
     content: "";
     position: absolute;
     left: 0;
     right: 100%;
     bottom: -2px;
     height: 2px;
-    background: rgb(var(--color-neon-pink));
-    box-shadow:
-      0 0 6px rgb(var(--color-neon-pink) / 0.8),
-      0 0 16px rgb(var(--color-neon-pink) / 0.5);
-    transition: right 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+    border-radius: 999px;
+    background: rgb(var(--color-accent));
+    transition: right 0.24s cubic-bezier(0.65, 0, 0.35, 1);
   }
-  .neon-link:hover,
-  .neon-link:focus-visible {
-    color: rgb(var(--color-tile-red));
+  .accent-link:hover,
+  .accent-link:focus-visible {
+    color: rgb(var(--color-accent));
   }
-  .neon-link:hover::after,
-  .neon-link:focus-visible::after {
+  .accent-link:hover::after,
+  .accent-link:focus-visible::after {
     right: 0;
   }
 
-  /* 卡片：磁磚感邊框，hover 時邊框亮起霓虹光暈 */
-  .tile-card {
-    @apply relative rounded-sm border border-ink/10 bg-tile-cream/40 transition-shadow duration-300;
+  /* 卡片：柔和陰影、大圓角的儀表板卡片風格 */
+  .panel-card {
+    @apply relative rounded-xl2 border border-ink/5 bg-surface shadow-card transition-shadow duration-300;
   }
-  .tile-card:hover,
-  .tile-card:focus-within {
-    box-shadow:
-      0 0 0 1.5px rgb(var(--color-neon-pink)),
-      0 0 14px rgb(var(--color-neon-pink) / 0.35);
+  .panel-card:hover,
+  .panel-card:focus-within {
+    @apply shadow-soft;
   }
 
-  /* 查核狀態徽章使用等寬字，像公文編號 */
+  /* 查核狀態徽章：柔色底、圓角藥丸 */
   .verify-badge {
-    @apply font-mono text-[11px] tracking-wide uppercase px-2 py-1 rounded-sm border;
+    @apply font-mono text-[11px] tracking-wide uppercase px-2.5 py-1 rounded-full border;
   }
+
+  /* 產業/類別小方塊 */
+  .category-chip {
+    @apply relative flex flex-col justify-end rounded-xl2 p-3 text-white shadow-card transition-transform duration-200;
+  }
+  .category-chip:hover {
+    transform: translateY(-2px);
+  }
+
+  /* 大面積色塊容器（側邊欄、Hero）共用的邊框掛勾，暗色模式下亮霓虹邊 */
+  .neon-frame {
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+}
+
+/* ------------------------------------------------------------------
+   暗色模式：卡片／色塊改成霓虹邊框，取代亮色模式的柔和陰影。
+------------------------------------------------------------------ */
+:root.dark .panel-card,
+:root.dark .category-chip,
+:root.dark .neon-frame {
+  border-color: rgb(var(--color-neon) / 0.4);
+  box-shadow:
+    0 0 0 1px rgb(var(--color-neon) / 0.12),
+    0 0 14px rgb(var(--color-neon) / 0.16);
+}
+:root.dark .panel-card:hover,
+:root.dark .panel-card:focus-within,
+:root.dark .category-chip:hover {
+  border-color: rgb(var(--color-neon) / 0.8);
+  box-shadow:
+    0 0 0 1.5px rgb(var(--color-neon) / 0.55),
+    0 0 22px rgb(var(--color-neon) / 0.4);
 }
 
 @media (prefers-reduced-motion: no-preference) {

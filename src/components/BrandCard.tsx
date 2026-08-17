@@ -1,17 +1,17 @@
 import type { Brand } from "@/data/types";
-import { NeonLink } from "./NeonLink";
+import { AccentLink } from "./AccentLink";
 
 export default function BrandCard({ brand }: { brand: Brand }) {
   return (
-    <article className="tile-card p-4 flex flex-col gap-2">
+    <article className="panel-card p-4 flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <h3 className="heading-sub">
-          <NeonLink to={`/brands/${brand.slug}`}>{brand.name}</NeonLink>
+          <AccentLink to={`/brands/${brand.slug}`}>{brand.name}</AccentLink>
         </h3>
         <span
           className={`verify-badge ${
             brand.merchantConfirmed
-              ? "border-tile-green text-tile-green bg-tile-green/10"
+              ? "border-chip-green text-chip-green bg-chip-green/10"
               : "border-ink/30 text-ink/50 bg-ink/5"
           }`}
         >
