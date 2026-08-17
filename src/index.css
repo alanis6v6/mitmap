@@ -3,18 +3,44 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --color-paper: 242 234 216;
+    --color-ink: 42 36 30;
+    --color-tile-red: 166 69 58;
+    --color-tile-green: 75 107 85;
+    --color-tile-blue: 59 88 117;
+    --color-tile-gold: 192 138 52;
+    --color-tile-cream: 232 221 196;
+    --color-neon-pink: 255 61 154;
+    --color-neon-cyan: 35 232 201;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    --color-paper: 21 24 20;
+    --color-ink: 243 234 215;
+    --color-tile-red: 214 129 115;
+    --color-tile-green: 123 155 130;
+    --color-tile-blue: 118 152 184;
+    --color-tile-gold: 215 174 97;
+    --color-tile-cream: 43 48 42;
+    --color-neon-pink: 255 94 174;
+    --color-neon-cyan: 75 235 214;
+  }
+
   html {
-    background-color: #f2ead8;
+    background-color: rgb(var(--color-paper));
   }
   body {
     @apply bg-paper text-ink font-body antialiased;
   }
   ::selection {
-    background: #ff3d9a;
-    color: #f2ead8;
+    background: rgb(var(--color-neon-pink));
+    color: rgb(var(--color-paper));
   }
   :focus-visible {
-    outline: 2px solid #ff3d9a;
+    outline: 2px solid rgb(var(--color-neon-pink));
     outline-offset: 3px;
   }
 }
@@ -55,8 +81,8 @@
   /* 花磚縫線底：低飽和格線紋理，模擬老磁磚地坪 */
   .tile-floor {
     background-image:
-      linear-gradient(rgba(42, 36, 30, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(42, 36, 30, 0.07) 1px, transparent 1px);
+      linear-gradient(rgb(var(--color-ink) / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--color-ink) / 0.07) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 
@@ -85,13 +111,15 @@
     right: 100%;
     bottom: -2px;
     height: 2px;
-    background: #ff3d9a;
-    box-shadow: 0 0 6px rgba(255, 61, 154, 0.8), 0 0 16px rgba(255, 61, 154, 0.5);
+    background: rgb(var(--color-neon-pink));
+    box-shadow:
+      0 0 6px rgb(var(--color-neon-pink) / 0.8),
+      0 0 16px rgb(var(--color-neon-pink) / 0.5);
     transition: right 0.28s cubic-bezier(0.65, 0, 0.35, 1);
   }
   .neon-link:hover,
   .neon-link:focus-visible {
-    color: #a6453a;
+    color: rgb(var(--color-tile-red));
   }
   .neon-link:hover::after,
   .neon-link:focus-visible::after {
@@ -105,12 +133,20 @@
   .tile-card:hover,
   .tile-card:focus-within {
     box-shadow:
-      0 0 0 1.5px #ff3d9a,
-      0 0 14px rgba(255, 61, 154, 0.35);
+      0 0 0 1.5px rgb(var(--color-neon-pink)),
+      0 0 14px rgb(var(--color-neon-pink) / 0.35);
   }
 
   /* 查核狀態徽章使用等寬字，像公文編號 */
   .verify-badge {
     @apply font-mono text-[11px] tracking-wide uppercase px-2 py-1 rounded-sm border;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition:
+      background-color 180ms ease,
+      color 180ms ease;
   }
 }
