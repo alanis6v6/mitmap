@@ -13,10 +13,10 @@ import Report from "@/pages/Report";
 
 export default function App() {
   return (
-    <div className="min-h-screen w-full p-2.5 sm:p-4 lg:p-5">
-      <div className="app-shell flex min-h-[calc(100vh-1.25rem)] sm:min-h-[calc(100vh-2rem)] lg:min-h-[calc(100vh-2.5rem)] w-full overflow-hidden rounded-xl3 bg-surface shadow-shell">
+    <div className="min-h-screen w-full p-0 md:p-4 lg:p-5">
+      <div className="app-shell flex min-h-screen md:min-h-[calc(100vh-2rem)] lg:min-h-[calc(100vh-2.5rem)] w-full overflow-hidden rounded-none bg-surface shadow-none md:rounded-xl3 md:shadow-shell">
         <Sidebar />
-        <div className="flex-1 min-w-0 px-4 py-5 sm:px-6 lg:px-8 xl:px-10 lg:py-8">
+        <div className="flex-1 min-w-0 px-5 pb-28 pt-7 md:px-6 md:py-5 lg:px-8 xl:px-10 lg:py-8">
           <main>
             <Routes>
               <Route path="/" element={<Home />} />

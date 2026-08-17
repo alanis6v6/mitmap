@@ -2,7 +2,7 @@ import { AccentLink } from "./AccentLink";
 
 export default function SiteFooter() {
   return (
-    <footer className="mt-16 mb-24 md:mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+    <footer className="mt-16 mb-6 hidden flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left md:flex">
       <div>
         <p className="stamp-text text-accent">佇遮 tī-tsia</p>
         <p className="text-lede">台灣囡仔、台灣製造，就在這裡。</p>

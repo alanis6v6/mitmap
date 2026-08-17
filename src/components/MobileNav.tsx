@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 export default function MobileNav() {
   return (
     <nav
-      className="neon-frame md:hidden fixed bottom-3 left-3 right-3 z-30 flex items-center justify-around rounded-xl3 bg-sidebar text-white shadow-soft px-2 py-2"
+      className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around rounded-t-[1.75rem] border-t border-ink/10 bg-surface/95 px-2 pb-3 pt-2 shadow-soft backdrop-blur md:hidden"
       aria-label="主要導覽"
     >
       {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
@@ -20,14 +20,20 @@ export default function MobileNav() {
           key={to}
           to={to}
           end={end}
-          className={({ isActive }) =>
-            `flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl2 text-[10px] ${
-              isActive ? "bg-white/20" : "text-white/75"
-            }`
-          }
+          className="flex min-w-[56px] flex-col items-center gap-0.5 py-1 text-[10px]"
         >
-          <Icon className="w-5 h-5" />
-          {label}
+          {({ isActive }) => (
+            <>
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                  isActive ? "bg-ink text-surface" : "text-ink/35"
+                }`}
+              >
+                <Icon className="h-4.5 w-4.5" />
+              </span>
+              <span className={isActive ? "font-bold text-ink" : "text-ink/40"}>{label}</span>
+            </>
+          )}
         </NavLink>
       ))}
     </nav>

@@ -164,6 +164,30 @@
   .app-shell {
     border: 1px solid rgb(var(--color-ink) / 0.06);
   }
+
+  .mobile-hide-scrollbar {
+    scrollbar-width: none;
+  }
+  .mobile-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-clamp {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    background-image: none;
+  }
+
+  .app-shell {
+    border: 0;
+  }
 }
 
 /* ------------------------------------------------------------------

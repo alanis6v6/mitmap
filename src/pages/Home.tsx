@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroRotator from "@/components/home/HeroRotator";
 import CategoryChipCarousel from "@/components/home/CategoryChipCarousel";
@@ -8,17 +8,37 @@ import { AccentLink } from "@/components/AccentLink";
 import { useProfilePanel } from "@/components/ProfilePanelProvider";
 import { products } from "@/data/mock";
 import { SearchIcon } from "@/components/icons";
+import MobileHome from "@/components/home/MobileHome";
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const sync = () => setMatches(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, [query]);
+
+  return matches;
+}
 
 export default function Home() {
   const { collapsed } = useProfilePanel();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const keyword = query.trim();
     navigate(keyword ? `/find?q=${encodeURIComponent(keyword)}` : "/find");
   };
+
+  if (!isDesktop) {
+    return <MobileHome query={query} onQueryChange={setQuery} onSubmit={submitSearch} />;
+  }
 
   return (
     <div
