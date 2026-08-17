@@ -1,100 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AccentLink } from "@/components/AccentLink";
-import { LocateIcon, ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
-import { useGeolocation } from "@/hooks/useGeolocation";
-import { haversineDistanceKm } from "@/lib/geo";
-import { products, getBrand } from "@/data/mock";
-import type { Product } from "@/data/types";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
+import { products, brands, getBrand } from "@/data/mock";
 
 const ROTATE_MS = 6000;
-
-function NearestSlide() {
-  const { status, coords, request } = useGeolocation();
-
-  const nearest = useMemo(() => {
-    if (!coords) return null;
-    let best: { product: Product; distanceKm: number } | null = null;
-    for (const product of products) {
-      const { lat, lng } = product.location;
-      if (lat == null || lng == null) continue;
-      const distanceKm = haversineDistanceKm(coords, { lat, lng });
-      if (!best || distanceKm < best.distanceKm) best = { product, distanceKm };
-    }
-    return best;
-  }, [coords]);
-
-  if (status === "idle" || status === "loading") {
-    return (
-      <div className="flex flex-col gap-3">
-        <span className="verify-badge border-white/40 text-white w-fit">距離最近</span>
-        <h2 className="heading-hero text-white">
-          離你最近的
-          <br />
-          台灣製造在哪？
-        </h2>
-        <p className="text-sm text-white/70 max-w-xs">
-          允許定位，幫你從收錄商品裡找出製造地離你最近的一件。
-        </p>
-        <button
-          type="button"
-          onClick={request}
-          disabled={status === "loading"}
-          className="inline-flex items-center gap-2 mt-2 w-fit rounded-full bg-white/15 hover:bg-white/25 transition-colors px-4 py-2 text-sm text-white disabled:opacity-60"
-        >
-          <LocateIcon className="w-4 h-4" />
-          {status === "loading" ? "定位中…" : "找出最近的商品"}
-        </button>
-      </div>
-    );
-  }
-
-  if (status === "denied" || status === "unsupported" || !nearest) {
-    return (
-      <div className="flex flex-col gap-3">
-        <span className="verify-badge border-white/40 text-white w-fit">距離最近</span>
-        <h2 className="heading-hero text-white">找不到你的位置</h2>
-        <p className="text-sm text-white/70 max-w-xs">
-          {status === "unsupported"
-            ? "這個瀏覽器不支援定位功能。"
-            : "沒有取得定位權限，先去逛逛全部收錄商品吧。"}
-        </p>
-        <AccentLink
-          to="/find"
-          className="inline-block mt-2 w-fit rounded-full bg-white/15 px-4 py-2 text-sm text-white"
-        >
-          看全部商品 →
-        </AccentLink>
-      </div>
-    );
-  }
-
-  const brand = getBrand(nearest.product.brandId);
-  return (
-    <div className="flex flex-col gap-3">
-      <span className="verify-badge border-white/40 text-white w-fit">
-        距離最近 · {nearest.distanceKm.toFixed(0)} 公里
-      </span>
-      <h2 className="heading-hero text-white">{nearest.product.name}</h2>
-      <p className="text-sm text-white/70 max-w-xs">
-        {brand?.name ?? "未知品牌"} · {nearest.product.location.county}
-        {nearest.product.location.cluster ? ` · ${nearest.product.location.cluster}` : ""}
-      </p>
-      <AccentLink
-        to={`/products/${nearest.product.slug}`}
-        className="inline-block mt-2 w-fit rounded-full bg-white/15 px-4 py-2 text-sm text-white"
-      >
-        看商品詳情 →
-      </AccentLink>
-    </div>
-  );
-}
 
 function SeasonalSlide() {
   const featured = products[0];
   const brand = getBrand(featured.brandId);
   return (
     <div className="flex flex-col gap-3">
-      <span className="verify-badge border-white/40 text-white w-fit">本季推薦</span>
+      <span className="verify-badge border-white/40 text-white w-fit">當季推薦</span>
       <h2 className="heading-hero text-white">{featured.name}</h2>
       <p className="text-sm text-white/70 max-w-xs">
         {brand?.name ?? "未知品牌"} · {featured.description}
@@ -109,17 +25,50 @@ function SeasonalSlide() {
   );
 }
 
-function AdSlide() {
+function ManufacturerSlide() {
+  const featured = brands[0];
   return (
     <div className="flex flex-col gap-3">
-      <span className="verify-badge border-white/40 text-white w-fit">廣告</span>
+      <span className="verify-badge border-white/40 text-white w-fit">台製廠商</span>
+      <h2 className="heading-hero text-white">{featured.name}</h2>
+      <p className="text-sm text-white/70 max-w-xs">{featured.description}</p>
+      <AccentLink
+        to={`/brands/${featured.slug}`}
+        className="inline-block mt-2 w-fit rounded-full bg-white/15 px-4 py-2 text-sm text-white"
+      >
+        看品牌詳情 →
+      </AccentLink>
+    </div>
+  );
+}
+
+function ShopeeSlide() {
+  return (
+    <div className="flex flex-col gap-3">
+      <span className="verify-badge border-white/40 text-white w-fit">蝦皮特搜</span>
       <h2 className="heading-hero text-white">
-        這裡留給
+        上架平台的
         <br />
-        台灣製品牌
+        台製好物特搜
       </h2>
       <p className="text-sm text-white/70 max-w-xs">
-        [ 廣告位 · AD SLOT ] 之後開放品牌合作曝光，串接真實廣告資料。
+        [ 蝦皮特搜位 · SHOPEE SLOT ] 之後串接關聯行銷連結，帶已查核的台製商品去蝦皮。
+      </p>
+    </div>
+  );
+}
+
+function MapSlide() {
+  return (
+    <div className="flex flex-col gap-3">
+      <span className="verify-badge border-white/40 text-white w-fit">地圖</span>
+      <h2 className="heading-hero text-white">
+        避雷還是推薦？
+        <br />
+        地圖說了算
+      </h2>
+      <p className="text-sm text-white/70 max-w-xs">
+        [ 地圖插槽 · MAP SLOT ] 這個分類還沒做，之後會在地圖上標出避雷店家與推薦店家。
       </p>
     </div>
   );
@@ -127,8 +76,9 @@ function AdSlide() {
 
 const SLIDES = [
   { key: "seasonal", render: () => <SeasonalSlide /> },
-  { key: "ad", render: () => <AdSlide /> },
-  { key: "nearest", render: () => <NearestSlide /> },
+  { key: "manufacturer", render: () => <ManufacturerSlide /> },
+  { key: "shopee", render: () => <ShopeeSlide /> },
+  { key: "map", render: () => <MapSlide /> },
 ];
 
 export default function HeroRotator({ className = "" }: { className?: string }) {

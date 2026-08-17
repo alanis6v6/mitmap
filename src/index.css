@@ -5,16 +5,16 @@
 @layer base {
   :root {
     color-scheme: light;
-    --color-shell: 250 227 208;
-    --color-surface: 255 251 246;
-    --color-panel: 255 255 253;
-    --color-sidebar: 214 122 97;
-    --color-ink: 54 42 36;
-    --color-accent: 219 110 90;
-    --color-chip-green: 158 190 148;
-    --color-chip-blue: 148 178 196;
-    --color-chip-gold: 214 176 108;
-    --color-chip-rose: 232 176 160;
+    --color-shell: 250 246 240;
+    --color-surface: 255 255 255;
+    --color-panel: 253 251 248;
+    --color-sidebar: 210 118 93;
+    --color-ink: 38 34 36;
+    --color-accent: 214 110 88;
+    --color-chip-green: 178 209 92;
+    --color-chip-blue: 186 175 240;
+    --color-chip-gold: 240 201 61;
+    --color-chip-rose: 224 92 79;
   }
 
   :root.dark {
@@ -26,10 +26,10 @@
     --color-ink: 240 230 220;
     --color-accent: 224 141 108;
     --color-neon: 88 240 214;
-    --color-chip-green: 122 155 112;
-    --color-chip-blue: 118 150 168;
-    --color-chip-gold: 196 152 86;
-    --color-chip-rose: 197 132 116;
+    --color-chip-green: 140 165 85;
+    --color-chip-blue: 150 138 190;
+    --color-chip-gold: 196 156 70;
+    --color-chip-rose: 190 96 84;
   }
 
   html {

@@ -10,7 +10,7 @@ export default function Home() {
   const { collapsed } = useProfilePanel();
 
   return (
-    <div className={`grid gap-6 items-start ${collapsed ? "" : "lg:grid-cols-[1fr_320px]"}`}>
+    <div className={`grid gap-6 ${collapsed ? "" : "lg:grid-cols-[1fr_320px]"}`}>
       <div className="flex flex-col gap-8 min-w-0">
         <div className="flex flex-col sm:flex-row gap-3">
           <HeroRotator className="flex-1" />
@@ -42,7 +42,7 @@ export default function Home() {
         </section>
       </div>
 
-      {!collapsed && <ProfilePanel className="lg:sticky lg:top-6" />}
+      {!collapsed && <ProfilePanel className="h-full lg:sticky lg:top-6" />}
     </div>
   );
 }
