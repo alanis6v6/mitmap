@@ -264,6 +264,37 @@
     0 0 22px rgb(var(--color-neon) / 0.4);
 }
 
+/* ------------------------------------------------------------------
+   手機版暗色系：墨金配色（參考 metaxy 墨金主題），只套用在 .mobile-home-snap
+   範圍內，不影響桌機版。基底改為暖黑墨色，強調色換成香檳金。
+------------------------------------------------------------------ */
+:root.dark .mobile-home-snap {
+  --color-shell: 19 17 20;
+  --color-ink: 234 230 224;
+  --color-accent: 200 164 110;
+  --color-mobile-bg: 19 17 20;
+  --color-mobile-card: 28 25 30;
+  --color-mobile-peach: 118 80 51;
+  --color-mobile-lime: 71 89 63;
+  --color-mobile-sky: 56 77 87;
+  --color-mobile-lilac: 88 57 70;
+}
+
+/* 上層渲染效果：夜色暈染 + 灑金箔微光，疊在卡片底色之上，呼應墨金質感 */
+:root.dark .mobile-snap-page {
+  background-image:
+    radial-gradient(ellipse 120% 70% at 50% -20%, rgb(200 164 110 / 0.12), transparent 60%),
+    radial-gradient(ellipse 90% 55% at 88% 112%, rgb(150 110 60 / 0.1), transparent 65%),
+    radial-gradient(1.3px 1.3px at 15% 22%, rgb(232 200 126 / 0.5), transparent 55%),
+    radial-gradient(1px 1px at 78% 12%, rgb(232 200 126 / 0.35), transparent 55%),
+    radial-gradient(1.2px 1.2px at 62% 38%, rgb(232 200 126 / 0.3), transparent 55%),
+    radial-gradient(1px 1px at 30% 58%, rgb(232 200 126 / 0.28), transparent 55%),
+    radial-gradient(1.4px 1.4px at 88% 72%, rgb(232 200 126 / 0.4), transparent 55%),
+    radial-gradient(1px 1px at 10% 86%, rgb(232 200 126 / 0.3), transparent 55%),
+    radial-gradient(1.2px 1.2px at 45% 94%, rgb(232 200 126 / 0.35), transparent 55%);
+  background-repeat: no-repeat;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   body {
     transition:

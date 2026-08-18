@@ -169,6 +169,14 @@ export function PlusCircleIcon(props: IconProps) {
   );
 }
 
+export function CloseIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
 export function SearchSmallIcon(props: IconProps) {
   return (
     <svg {...base} width={16} height={16} strokeWidth={2} {...props}>
