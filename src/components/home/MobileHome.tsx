@@ -4,18 +4,18 @@ import { useAuth } from "@/components/AuthProvider";
 import { AccentLink } from "@/components/AccentLink";
 import { useFavorites } from "@/components/FavoritesProvider";
 import OriginBadge from "@/components/OriginBadge";
-import { useTheme } from "@/components/ThemeProvider";
-import PopularCategoryStrip from "@/components/home/PopularCategoryStrip";
+import { useAvatarOverride } from "@/hooks/useAvatarOverride";
+import PopularCategoryStrip, { CATEGORY_CARD_HEIGHT } from "@/components/home/PopularCategoryStrip";
+import MobileProfileSheet from "@/components/home/MobileProfileSheet";
 import {
   BoxIcon,
   CloseIcon,
   GridIcon,
   HeartIcon,
   MapPinIcon,
-  MoonIcon,
   SearchIcon,
   StoreIcon,
-  SunIcon,
+  UserIcon,
 } from "@/components/icons";
 import {
   brands,
@@ -35,21 +35,16 @@ const SEARCH_MODES = [
   { key: "region" as const, label: "地區", icon: MapPinIcon, tone: "bg-mobile-lilac/60" },
 ];
 
-// 展開動畫：icon 位移 600ms 到位，搜尋列在到位前 0.5 秒（第 100ms～600ms）淡入完成。
-const EXPAND_TRANSITION =
-  "flex-grow 600ms cubic-bezier(0.22,1,0.36,1) 0ms, flex-basis 600ms cubic-bezier(0.22,1,0.36,1) 0ms, opacity 500ms ease 100ms";
-const COLLAPSE_TRANSITION =
-  "flex-grow 380ms cubic-bezier(0.22,1,0.36,1) 0ms, flex-basis 380ms cubic-bezier(0.22,1,0.36,1) 0ms, opacity 200ms ease 0ms";
-
 export default function MobileHome() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { overrideUrl } = useAvatarOverride(user?.id ?? null);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<SearchMode>("product");
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [activePage, setActivePage] = useState(0);
   const snapRootRef = useRef<HTMLDivElement>(null);
@@ -57,6 +52,7 @@ export default function MobileHome() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const displayName = user?.name?.trim().split(/\s+/)[0] || "訪客";
   const activeMode = SEARCH_MODES.find((item) => item.key === mode) ?? SEARCH_MODES[0];
+  const avatarSrc = overrideUrl ?? user?.picture;
 
   const suggestions = useMemo<Record<SearchMode, string[]>>(
     () => ({
@@ -175,20 +171,24 @@ export default function MobileHome() {
           </div>
           <button
             type="button"
-            onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
-            aria-label={resolvedTheme === "light" ? "切換暗色主題" : "切換亮色主題"}
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mobile-card text-ink shadow-card ring-1 ring-ink/5"
+            onClick={() => setProfileOpen(true)}
+            aria-label={user ? `前往 ${user.name} 的會員頁面` : "登入或註冊"}
+            className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-mobile-card text-ink shadow-card ring-1 ring-ink/5"
           >
-            {resolvedTheme === "light" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+            {avatarSrc ? (
+              <img src={avatarSrc} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <UserIcon className="h-5 w-5" />
+            )}
           </button>
         </header>
 
         <div
-          className={`rounded-[1.65rem] border bg-mobile-card p-2 shadow-card transition-all ${
+          className={`${CATEGORY_CARD_HEIGHT} flex flex-col justify-between rounded-[1.65rem] border bg-mobile-card p-4 shadow-card transition-all ${
             searchFocused ? "border-accent/35 shadow-soft" : "border-ink/8"
           }`}
         >
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between gap-2">
             {SEARCH_MODES.map(({ key, label, icon: Icon, tone }) => {
               const selected = mode === key;
               return (
@@ -196,96 +196,83 @@ export default function MobileHome() {
                   key={key}
                   type="button"
                   aria-pressed={selected}
-                  aria-label={searchExpanded ? label : `搜尋${label}`}
+                  aria-label={`搜尋${label}`}
                   onClick={() => selectMode(key)}
-                  style={{
-                    flexGrow: searchExpanded ? 0 : 1,
-                    flexBasis: searchExpanded ? "2.75rem" : "0%",
-                    transition: searchExpanded ? EXPAND_TRANSITION : COLLAPSE_TRANSITION,
-                  }}
-                  className="flex min-w-0 flex-col items-center gap-1.5 overflow-hidden text-center"
+                  className="flex min-w-0 flex-1 flex-col items-center gap-2 text-center"
                 >
                   <span
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-all ${tone} ${
-                      selected && searchExpanded ? "ring-2 ring-accent/35" : ""
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${tone} ${
+                      selected ? "ring-2 ring-accent/35" : ""
                     }`}
                   >
                     <Icon className="h-5 w-5" />
                   </span>
-                  <span
-                    className={`text-[11px] font-bold text-ink/60 transition-opacity duration-200 ${
-                      searchExpanded ? "opacity-0" : "opacity-100"
-                    }`}
-                  >
-                    {label}
-                  </span>
+                  <span className={`text-[11px] font-bold ${selected ? "text-accent" : "text-ink/60"}`}>{label}</span>
                 </button>
               );
             })}
-
-            <div
-              style={{
-                flexGrow: searchExpanded ? 1 : 0,
-                flexBasis: 0,
-                opacity: searchExpanded ? 1 : 0,
-                pointerEvents: searchExpanded ? "auto" : "none",
-                transition: searchExpanded ? EXPAND_TRANSITION : COLLAPSE_TRANSITION,
-              }}
-              className="min-w-0 overflow-hidden"
-            >
-              <form
-                onSubmit={submitSearch}
-                onFocusCapture={() => setSearchFocused(true)}
-                onBlurCapture={(event) => {
-                  if (!event.currentTarget.contains(event.relatedTarget)) setSearchFocused(false);
-                }}
-                className="flex items-center gap-2 pl-1"
-              >
-                <input
-                  ref={searchInputRef}
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder={searchFocused ? `例如：${currentSuggestion}` : `搜尋${activeMode.label}`}
-                  aria-label={`搜尋${activeMode.label}`}
-                  tabIndex={searchExpanded ? 0 : -1}
-                  className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink/35"
-                />
-                <button
-                  type="button"
-                  aria-label="收起搜尋"
-                  tabIndex={searchExpanded ? 0 : -1}
-                  onClick={collapseSearch}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink/40"
-                >
-                  <CloseIcon className="h-4 w-4" />
-                </button>
-                <button
-                  type="submit"
-                  aria-label="搜尋"
-                  tabIndex={searchExpanded ? 0 : -1}
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-white shadow-accent"
-                >
-                  <SearchIcon className="h-5 w-5" />
-                </button>
-              </form>
-            </div>
           </div>
 
-          <button
-            type="button"
-            onClick={chooseSuggestion}
-            tabIndex={searchExpanded && searchFocused ? 0 : -1}
-            className={`grid w-full transition-all duration-300 ${
-              searchExpanded && searchFocused ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-            }`}
+          <div
+            style={{
+              opacity: searchExpanded ? 1 : 0,
+              transform: searchExpanded ? "translateY(0)" : "translateY(10px)",
+              pointerEvents: searchExpanded ? "auto" : "none",
+              transition: "opacity 380ms ease, transform 380ms cubic-bezier(0.22,1,0.36,1)",
+            }}
           >
-            <span className="overflow-hidden">
-              <span className="flex items-center justify-between border-t border-ink/8 px-3 pb-1 pt-2 text-left text-xs text-ink/45">
-                <span>推薦搜尋</span>
-                <strong className="font-bold text-accent" aria-live="polite">{currentSuggestion} ↗</strong>
+            <form
+              onSubmit={submitSearch}
+              onFocusCapture={() => setSearchFocused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setSearchFocused(false);
+              }}
+              className="flex items-center gap-2 border-t border-ink/8 pt-3"
+            >
+              <input
+                ref={searchInputRef}
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={searchFocused ? `例如：${currentSuggestion}` : `搜尋${activeMode.label}`}
+                aria-label={`搜尋${activeMode.label}`}
+                tabIndex={searchExpanded ? 0 : -1}
+                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink/35"
+              />
+              <button
+                type="button"
+                aria-label="收起搜尋"
+                tabIndex={searchExpanded ? 0 : -1}
+                onClick={collapseSearch}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink/40"
+              >
+                <CloseIcon className="h-4 w-4" />
+              </button>
+              <button
+                type="submit"
+                aria-label="搜尋"
+                tabIndex={searchExpanded ? 0 : -1}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-white shadow-accent"
+              >
+                <SearchIcon className="h-5 w-5" />
+              </button>
+            </form>
+
+            <button
+              type="button"
+              onClick={chooseSuggestion}
+              tabIndex={searchExpanded && searchFocused ? 0 : -1}
+              className={`grid w-full transition-all duration-300 ${
+                searchFocused ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <span className="overflow-hidden">
+                <span className="flex items-center justify-between border-t border-ink/8 px-3 pb-1 pt-2 text-left text-xs text-ink/45">
+                  <span>推薦搜尋</span>
+                  <strong className="font-bold text-accent" aria-live="polite">{currentSuggestion} ↗</strong>
+                </span>
               </span>
-            </span>
-          </button>
+            </button>
+          </div>
         </div>
 
         <section className="mt-auto">
@@ -367,6 +354,8 @@ export default function MobileHome() {
 
         <p className="pb-1 text-center font-mono text-[10px] tracking-[0.14em] text-ink/30">左右滑動看更多 · 向上滑回熱門分類</p>
       </section>
+
+      <MobileProfileSheet open={profileOpen} onClose={() => setProfileOpen(false)} />
     </div>
   );
 }
