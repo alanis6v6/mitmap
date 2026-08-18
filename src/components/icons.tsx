@@ -169,6 +169,15 @@ export function PlusCircleIcon(props: IconProps) {
   );
 }
 
+export function UserIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="8.3" r="3.3" />
+      <path d="M5 20c0-3.6 3.1-6.3 7-6.3s7 2.7 7 6.3" />
+    </svg>
+  );
+}
+
 export function CloseIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>

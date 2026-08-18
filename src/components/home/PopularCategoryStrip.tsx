@@ -9,7 +9,9 @@ export interface PopularCategoryItem {
 }
 
 const TONES = ["bg-mobile-peach", "bg-mobile-sky", "bg-mobile-lime", "bg-mobile-lilac"];
-const CARD_SIZE = "h-[172px] w-[60vw] max-w-[236px]";
+/** 卡片高度也是首頁搜尋欄「拉長」後要對齊的高度，兩處共用同一個 class 字串。 */
+export const CATEGORY_CARD_HEIGHT = "h-[172px]";
+const CARD_SIZE = `${CATEGORY_CARD_HEIGHT} w-[60vw] max-w-[236px]`;
 const GAP_PX = 12; // matches gap-3
 const EDGE_GIVE = 64; // px of rubber-band "give" past the first/last card
 const DRAG_THRESHOLD = 6; // px before a pointer gesture counts as a drag, not a tap
