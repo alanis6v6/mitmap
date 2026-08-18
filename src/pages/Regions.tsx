@@ -1,13 +1,24 @@
 import { AccentLink } from "@/components/AccentLink";
 import { regionClusters } from "@/data/mock";
+import { useSearchParams } from "react-router-dom";
 
 export default function Regions() {
+  const [searchParams] = useSearchParams();
+  const query = (searchParams.get("q") ?? "").trim().toLocaleLowerCase("zh-Hant-TW");
+  const visibleRegions = regionClusters.filter((region) =>
+    [region.county, region.clusterName, region.description]
+      .join(" ")
+      .toLocaleLowerCase("zh-Hant-TW")
+      .includes(query),
+  );
+
   return (
     <div>
       <h1 className="heading-page mb-1">找地方</h1>
       <p className="text-lede mb-8 max-w-xl">
-        按縣市/產業聚落瀏覽製造地，跟「找商品」是兩條平行路徑——這裡回答的是
-        「這個地方做出了什麼」，不用先選類別。
+        {query
+          ? `正在搜尋「${searchParams.get("q")}」相關的製造地與產業聚落。`
+          : "按縣市／產業聚落瀏覽製造地，這裡回答的是「這個地方做出了什麼」。"}
       </p>
 
       {/*
@@ -25,7 +36,7 @@ export default function Regions() {
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {regionClusters.map((r) => (
+        {visibleRegions.map((r) => (
           <article key={r.id} className="panel-card p-4">
             <p className="text-meta">{r.county}</p>
             <h3 className="heading-sub mt-1">
@@ -37,6 +48,9 @@ export default function Regions() {
           </article>
         ))}
       </div>
+      {visibleRegions.length === 0 && (
+        <p className="py-12 text-center text-sm text-ink/50">目前沒有符合的地區或產業聚落。</p>
+      )}
     </div>
   );
 }

@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   if (!isDesktop) {
-    return <MobileHome query={query} onQueryChange={setQuery} onSubmit={submitSearch} />;
+    return <MobileHome />;
   }
 
   return (

@@ -10,6 +10,7 @@ export default function Find() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get("category") ?? "all";
   const query = (searchParams.get("q") ?? "").trim().toLocaleLowerCase("zh-Hant-TW");
+  const scope = searchParams.get("scope");
 
   const [origin, setOrigin] = useState<OriginClassification | "all">("all");
   const [county, setCounty] = useState<string>("all");
@@ -25,14 +26,15 @@ export default function Find() {
     if (activeCategory !== "all" && cat?.slug !== activeCategory) return false;
     if (origin !== "all" && p.origin.classification !== origin) return false;
     if (county !== "all" && p.location.county !== county) return false;
-    if (
-      query &&
-      ![p.name, p.description, brand?.name, cat?.name, p.location.county, p.location.cluster]
-        .filter(Boolean)
-        .join(" ")
-        .toLocaleLowerCase("zh-Hant-TW")
-        .includes(query)
-    ) {
+    const scopedFields =
+      scope === "product"
+        ? [p.name, p.description]
+        : scope === "brand"
+          ? [brand?.name, brand?.description]
+          : scope === "category"
+            ? [cat?.name]
+            : [p.name, p.description, brand?.name, cat?.name, p.location.county, p.location.cluster];
+    if (query && !scopedFields.filter(Boolean).join(" ").toLocaleLowerCase("zh-Hant-TW").includes(query)) {
       return false;
     }
     return true;
@@ -50,7 +52,7 @@ export default function Find() {
       <h1 className="heading-page mb-1">找商品</h1>
       <p className="text-lede mb-6">
         {query
-          ? `正在搜尋「${searchParams.get("q")}」；也可繼續疊加類別、製造分類與地區篩選。`
+          ? `正在${scope === "brand" ? "品牌" : scope === "category" ? "分類" : "商品"}範圍搜尋「${searchParams.get("q")}」；也可繼續疊加篩選。`
           : "類別、原料/製造分類、地區三個篩選器互相獨立，可自由疊加。"}
       </p>
 

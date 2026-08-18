@@ -18,6 +18,14 @@ export default {
           gold: "rgb(var(--color-chip-gold) / <alpha-value>)",
           rose: "rgb(var(--color-chip-rose) / <alpha-value>)",
         },
+        mobile: {
+          bg: "rgb(var(--color-mobile-bg) / <alpha-value>)",
+          card: "rgb(var(--color-mobile-card) / <alpha-value>)",
+          peach: "rgb(var(--color-mobile-peach) / <alpha-value>)",
+          lime: "rgb(var(--color-mobile-lime) / <alpha-value>)",
+          sky: "rgb(var(--color-mobile-sky) / <alpha-value>)",
+          lilac: "rgb(var(--color-mobile-lilac) / <alpha-value>)",
+        },
       },
       fontFamily: {
         display: ['"Noto Serif TC"', "serif"],

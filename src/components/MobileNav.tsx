@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 export default function MobileNav() {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around rounded-t-[1.75rem] border-t border-ink/10 bg-surface/95 px-2 pb-3 pt-2 shadow-soft backdrop-blur md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around rounded-t-[1.75rem] border-t border-ink/10 bg-mobile-card/95 px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 shadow-soft backdrop-blur md:hidden"
       aria-label="主要導覽"
     >
       {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
@@ -26,7 +26,7 @@ export default function MobileNav() {
             <>
               <span
                 className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                  isActive ? "bg-ink text-surface" : "text-ink/35"
+                  isActive ? "bg-ink text-mobile-card" : "text-ink/35"
                 }`}
               >
                 <Icon className="h-4.5 w-4.5" />
