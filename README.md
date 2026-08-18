@@ -29,10 +29,11 @@ npm run build    # 檢查型別 + build 產出 dist/
 ## 版面結構
 
 左側 icon 導覽（`Sidebar.tsx`，手機版收成底部 `MobileNav.tsx`）＋內容欄，
-首頁另外多一欄右側個人面板：
+首頁在桌機與手機共用同一套響應式敘事結構，桌機版在商品目錄旁保留個人面板：
 
-- `/` 首頁 — 中間輪播 Hero（本季推薦／廣告位／距離最近，見下）＋類別方塊
-  輪播＋近期收錄商品輪播＋法規小知識；右側是個人面板（登入、大頭貼、收藏）
+- `/` 首頁 — 以「起點／商品路徑／製造地方／商品目錄」四章組成；使用者可切換
+  商品，沿原料、製程、地方與查核結論閱讀製造故事。手機改成橫向滑動商品頁籤與
+  商品目錄，桌機提供章節快速導覽；全頁不依賴圖片或插畫
 - `/find` 找商品 — 類別 tab + 兩個獨立篩選器（原料分類／地區），可疊加
 - `/regions` 找地方 — 獨立於「找商品」的地理瀏覽入口，目前是格狀卡片＋
   一個地圖插槽（`[ 地圖插槽 · MAP SLOT ]`），標好 TODO 等你接 Google Maps API
@@ -40,22 +41,6 @@ npm run build    # 檢查型別 + build 產出 dist/
 - `/brands/:slug` 品牌頁 — 品牌資訊 + 旗下商品清單
 - `/about` 收錄標準 — 查核狀態圖例 + 法規依據
 - `/submit`、`/report` — 表單骨架，等你接送出邏輯
-
-## 首頁 Hero 輪播
-
-`src/components/home/HeroRotator.tsx` 每 6 秒輪播三張卡：本季推薦（從
-`mock.ts` 取第一筆商品）、廣告位（`[ AD SLOT ]` 佔位，之後接真的廣告資料）、
-距離最近（見下）。可以點兩側箭頭或下方圓點手動切換。
-
-## 距離最近（瀏覽器定位）
-
-`src/hooks/useGeolocation.ts` 封裝瀏覽器 Geolocation API，**使用者主動按
-按鈕才觸發定位權限請求**，不會一進頁面就跳權限提示。拿到座標後用
-`src/lib/geo.ts` 的 haversine 公式，對 `mock.ts` 裡每筆商品的
-`location.lat/lng` 算距離，取最近的一筆顯示。
-
-真資料的地址還沒有精確座標前，這區塊只能先用示範座標；接真資料時記得
-把每筆 `location` 補上實際 geocode 過的 `lat`/`lng`。
 
 ## 登入設定（Google Sign-In）
 
@@ -88,9 +73,10 @@ payload 解碼出來顯示大頭貼/名字，沒有驗證簽章。純粹用來�
 
 ## 設計語彙
 
-- 配色：暖色系儀表板風格——外層桃膚色 `shell`、卡片米白 `surface`／
-  `panel`、側邊欄與強調色是珊瑚色 `sidebar`／`accent`，四色產業方塊
-  `chip-green`／`chip-blue`／`chip-gold`／`chip-rose`
+- 配色：紙張米白 `surface`、深林綠 `sidebar`、墨黑 `ink` 與朱橘色
+  `accent`。主要敘事靠色塊、分隔線、數字與留白建立節奏，不使用情境圖
+- 互動：商品頁籤會即時改寫製造路徑；地方列在 hover／focus 時反轉色彩；
+  手機的頁籤與商品目錄支援水平滑動與 scroll snap
 - 字體：中文標題 Noto Serif TC（粗黑）、品牌 logo 用 Alfa Slab One、
   內文 Noto Sans TC、狀態/編號用 IBM Plex Mono
 - 強調連結（`.accent-link`，見 `src/index.css`）：平時是墨色字，

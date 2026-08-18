@@ -38,7 +38,7 @@ export default function App() {
               <Route path="/report" element={<Report />} />
             </Routes>
           </main>
-          <SiteFooter />
+          {!isHome && <SiteFooter />}
         </div>
         <MobileNav />
       </div>
