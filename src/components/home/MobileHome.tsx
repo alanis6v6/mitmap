@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
 import { AccentLink } from "@/components/AccentLink";
 import { useFavorites } from "@/components/FavoritesProvider";
 import OriginBadge from "@/components/OriginBadge";
 import { useTheme } from "@/components/ThemeProvider";
+import PopularCategoryStrip from "@/components/home/PopularCategoryStrip";
 import {
   BoxIcon,
+  CloseIcon,
   GridIcon,
   HeartIcon,
   MapPinIcon,
@@ -33,13 +35,11 @@ const SEARCH_MODES = [
   { key: "region" as const, label: "地區", icon: MapPinIcon, tone: "bg-mobile-lilac/60" },
 ];
 
-const CATEGORY_TONES = ["bg-mobile-peach", "bg-mobile-sky", "bg-mobile-lime", "bg-mobile-lilac"];
-const CATEGORY_SIZES = [
-  "h-[184px] w-[68vw] max-w-[280px]",
-  "h-[158px] w-[52vw] max-w-[220px]",
-  "h-[174px] w-[60vw] max-w-[250px]",
-  "h-[150px] w-[48vw] max-w-[205px]",
-];
+// 展開動畫：icon 位移 600ms 到位，搜尋列在到位前 0.5 秒（第 100ms～600ms）淡入完成。
+const EXPAND_TRANSITION =
+  "flex-grow 600ms cubic-bezier(0.22,1,0.36,1) 0ms, flex-basis 600ms cubic-bezier(0.22,1,0.36,1) 0ms, opacity 500ms ease 100ms";
+const COLLAPSE_TRANSITION =
+  "flex-grow 380ms cubic-bezier(0.22,1,0.36,1) 0ms, flex-basis 380ms cubic-bezier(0.22,1,0.36,1) 0ms, opacity 200ms ease 0ms";
 
 export default function MobileHome() {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ export default function MobileHome() {
   const { resolvedTheme, setTheme } = useTheme();
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<SearchMode>("product");
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [activePage, setActivePage] = useState(0);
@@ -56,7 +57,6 @@ export default function MobileHome() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const displayName = user?.name?.trim().split(/\s+/)[0] || "訪客";
   const activeMode = SEARCH_MODES.find((item) => item.key === mode) ?? SEARCH_MODES[0];
-  const ActiveModeIcon = activeMode.icon;
 
   const suggestions = useMemo<Record<SearchMode, string[]>>(
     () => ({
@@ -69,6 +69,17 @@ export default function MobileHome() {
   );
   const currentSuggestions = suggestions[mode];
   const currentSuggestion = currentSuggestions[suggestionIndex % currentSuggestions.length] ?? "台灣製";
+
+  const popularCategories = useMemo(
+    () =>
+      categories.slice(0, 4).map((category) => ({
+        id: category.id,
+        slug: category.slug,
+        name: category.name,
+        count: products.filter((product) => product.categoryId === category.id).length,
+      })),
+    [],
+  );
 
   useEffect(() => {
     setSuggestionIndex(0);
@@ -101,7 +112,15 @@ export default function MobileHome() {
   const selectMode = (nextMode: SearchMode) => {
     setMode(nextMode);
     setSuggestionIndex(0);
+    setSearchExpanded(true);
     window.requestAnimationFrame(() => searchInputRef.current?.focus());
+  };
+
+  const collapseSearch = () => {
+    setSearchExpanded(false);
+    setSearchFocused(false);
+    setQuery("");
+    searchInputRef.current?.blur();
   };
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
@@ -165,39 +184,99 @@ export default function MobileHome() {
         </header>
 
         <div
-          onFocusCapture={() => setSearchFocused(true)}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) setSearchFocused(false);
-          }}
           className={`rounded-[1.65rem] border bg-mobile-card p-2 shadow-card transition-all ${
             searchFocused ? "border-accent/35 shadow-soft" : "border-ink/8"
           }`}
         >
-          <form onSubmit={submitSearch} className="flex items-center gap-3 pl-2">
-            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${activeMode.tone}`}>
-              <ActiveModeIcon className="h-5 w-5" />
-            </span>
-            <input
-              ref={searchInputRef}
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={searchFocused ? `例如：${currentSuggestion}` : `搜尋${activeMode.label}`}
-              aria-label={`搜尋${activeMode.label}`}
-              className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink/35"
-            />
-            <button
-              type="submit"
-              aria-label="搜尋"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-white shadow-accent"
+          <div className="flex items-center gap-1.5">
+            {SEARCH_MODES.map(({ key, label, icon: Icon, tone }) => {
+              const selected = mode === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={selected}
+                  aria-label={searchExpanded ? label : `搜尋${label}`}
+                  onClick={() => selectMode(key)}
+                  style={{
+                    flexGrow: searchExpanded ? 0 : 1,
+                    flexBasis: searchExpanded ? "2.75rem" : "0%",
+                    transition: searchExpanded ? EXPAND_TRANSITION : COLLAPSE_TRANSITION,
+                  }}
+                  className="flex min-w-0 flex-col items-center gap-1.5 overflow-hidden text-center"
+                >
+                  <span
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-all ${tone} ${
+                      selected && searchExpanded ? "ring-2 ring-accent/35" : ""
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span
+                    className={`text-[11px] font-bold text-ink/60 transition-opacity duration-200 ${
+                      searchExpanded ? "opacity-0" : "opacity-100"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </button>
+              );
+            })}
+
+            <div
+              style={{
+                flexGrow: searchExpanded ? 1 : 0,
+                flexBasis: 0,
+                opacity: searchExpanded ? 1 : 0,
+                pointerEvents: searchExpanded ? "auto" : "none",
+                transition: searchExpanded ? EXPAND_TRANSITION : COLLAPSE_TRANSITION,
+              }}
+              className="min-w-0 overflow-hidden"
             >
-              <SearchIcon className="h-5 w-5" />
-            </button>
-          </form>
+              <form
+                onSubmit={submitSearch}
+                onFocusCapture={() => setSearchFocused(true)}
+                onBlurCapture={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) setSearchFocused(false);
+                }}
+                className="flex items-center gap-2 pl-1"
+              >
+                <input
+                  ref={searchInputRef}
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={searchFocused ? `例如：${currentSuggestion}` : `搜尋${activeMode.label}`}
+                  aria-label={`搜尋${activeMode.label}`}
+                  tabIndex={searchExpanded ? 0 : -1}
+                  className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink/35"
+                />
+                <button
+                  type="button"
+                  aria-label="收起搜尋"
+                  tabIndex={searchExpanded ? 0 : -1}
+                  onClick={collapseSearch}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink/40"
+                >
+                  <CloseIcon className="h-4 w-4" />
+                </button>
+                <button
+                  type="submit"
+                  aria-label="搜尋"
+                  tabIndex={searchExpanded ? 0 : -1}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-white shadow-accent"
+                >
+                  <SearchIcon className="h-5 w-5" />
+                </button>
+              </form>
+            </div>
+          </div>
+
           <button
             type="button"
             onClick={chooseSuggestion}
+            tabIndex={searchExpanded && searchFocused ? 0 : -1}
             className={`grid w-full transition-all duration-300 ${
-              searchFocused ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              searchExpanded && searchFocused ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
             }`}
           >
             <span className="overflow-hidden">
@@ -209,30 +288,6 @@ export default function MobileHome() {
           </button>
         </div>
 
-        <nav className="grid grid-cols-4 gap-2" aria-label="搜尋範圍">
-          {SEARCH_MODES.map(({ key, label, icon: Icon, tone }) => {
-            const selected = mode === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => selectMode(key)}
-                className="flex min-w-0 flex-col items-center gap-2 text-center"
-              >
-                <span
-                  className={`flex h-13 w-13 items-center justify-center rounded-2xl transition-all ${tone} ${
-                    selected ? "scale-90 ring-2 ring-accent/35" : ""
-                  }`}
-                >
-                  {selected ? <span className="text-[10px] font-black text-accent">已選</span> : <Icon className="h-5 w-5" />}
-                </span>
-                <span className={`text-[11px] font-bold ${selected ? "text-accent" : "text-ink/60"}`}>{label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
         <section className="mt-auto">
           <div className="mb-3 flex items-end justify-between pr-3">
             <div>
@@ -241,28 +296,9 @@ export default function MobileHome() {
             </div>
             <AccentLink to="/find" className="text-xs font-bold">全部分類 →</AccentLink>
           </div>
-          <div className="mobile-horizontal-snap -mx-5 flex items-end gap-3 overflow-x-auto px-5 pb-1 pr-12">
-            {categories.slice(0, 4).map((category, index) => {
-              const count = products.filter((product) => product.categoryId === category.id).length;
-              return (
-                <Link
-                  key={category.id}
-                  to={`/find?category=${category.slug}`}
-                  className={`flex shrink-0 snap-start snap-always flex-col justify-between rounded-xl3 p-5 text-ink shadow-card ${CATEGORY_TONES[index]} ${CATEGORY_SIZES[index]}`}
-                >
-                  <div className="flex items-start justify-between text-xs">
-                    <span className="font-mono text-ink/45">0{index + 1}</span>
-                    <span className="rounded-full bg-mobile-card/55 px-2.5 py-1 text-[10px]">{count || "尚無"} 件</span>
-                  </div>
-                  <div>
-                    <p className="mb-1 text-xs text-ink/50">台灣製好物</p>
-                    <h3 className="font-display text-3xl font-black">{category.name}</h3>
-                    <p className="mt-2 text-xs font-bold">查看分類 →</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <PopularCategoryStrip
+            items={popularCategories}
+          />
         </section>
       </section>
 
